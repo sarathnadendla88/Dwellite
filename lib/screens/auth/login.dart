@@ -55,6 +55,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     SharedPreferencesHelper().saveData("localuserid", data['user_id'].toString());
     SharedPreferencesHelper().saveData("otp", data['otp'].toString());
+    SharedPreferencesHelper().saveIntData(Constants.USER_TYPE_DATA, data['user_type']);
 
 
     //SharedPreferencesHelper().saveData("usertype", data['user_type']);

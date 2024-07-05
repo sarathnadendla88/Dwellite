@@ -5,6 +5,7 @@ import 'package:dwellite/screens/inOut/in_out.dart';
 import 'package:dwellite/screens/screens.dart';
 import 'package:dwellite/theme/theme.dart';
 import 'package:dwellite/utils/constants.dart';
+import 'package:dwellite/utils/utility.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
@@ -12,6 +13,7 @@ import 'package:iconify_flutter/icons/ep.dart';
 import 'package:iconify_flutter/icons/fluent_mdl2.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:iconify_flutter/icons/ri.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 UserType? userType;
 
@@ -26,20 +28,42 @@ class _BottomBarState extends State<BottomBar> {
   int selectedIndex = 0;
 
   DateTime? backPressTime;
+  dynamic pages;
 
-  final pages = userType == UserType.resident
-      ? const [
-          HomeScreen(),
-          ChatsScreen(),
-          ServiceScreen(),
-          ProfileScreen(),
-        ]
-      : const [
-          GuardHomeScreen(),
-          InOutScreen(),
-          ChatsScreen(),
-          SettingsScreen(),
-        ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sharedPrefData();
+  }
+
+  Future<void> sharedPrefData() async {
+    var userTypeData =
+        await SharedPreferencesHelper().readIntData(Constants.USER_TYPE_DATA);
+    if (userTypeData == 1001) {
+      userType = UserType.resident;
+    } else if (userTypeData == 1002) {
+      userType = UserType.guard;
+    } else {
+      userType = UserType.resident;
+    }
+    setState(() {
+      pages = userType == UserType.resident
+        ? const [
+            HomeScreen(),
+            ChatsScreen(),
+            ServiceScreen(),
+            ProfileScreen(),
+          ]
+        : const [
+            GuardHomeScreen(),
+            InOutScreen(),
+            ChatsScreen(),
+            SettingsScreen(),
+          ];
+    });
+    
+  }
 
   final sendMessage = [
     {
