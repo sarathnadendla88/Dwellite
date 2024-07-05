@@ -13,7 +13,7 @@ class APIService {
 
   String get baseUrl {
     //if (kDebugMode) {
-    return 'http://localhost:8080';
+    return 'http://118.139.164.158:8080';
     // }
 
     return 'production url';
@@ -128,7 +128,7 @@ class APIService {
   Future<Response> verifyOtp(int userId, String otp, String deviceId) async {
     try {
       Response response = await Dio().post(
-        "http://localhost:8080/user/verify",
+        "http://118.139.164.158:8080/user/verify",
         data: {"user_id": userId, "otp": otp, "device_id": deviceId},
       );
 
@@ -146,7 +146,7 @@ class APIService {
     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
     print(atoken);
     try {
-      Response response = await Dio().get("http://localhost:8080/user/visitors",
+      Response response = await Dio().get("http://118.139.164.158:8080/user/visitors",
           options: Options(headers: {
             "Content-Type": "application/json",
             "access-token": atoken,
@@ -167,7 +167,7 @@ class APIService {
     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
     try {
       Response response =
-          await Dio().post("http://localhost:8080/user/visitors",
+          await Dio().post("http://118.139.164.158:8080/user/visitors",
               data: {
                 "visitor_type": userType.value,
                 "entry_date": date,
@@ -193,7 +193,7 @@ class APIService {
     Map<String, dynamic> parsedJson = jsonDecode(jsonString);
     try {
       Response response =
-          await Dio().post("http://localhost:8080/user/visitors",
+          await Dio().post("http://118.139.164.158:8080/user/visitors",
               data: parsedJson,
               options: Options(headers: {
                 "Content-Type": "application/json",
@@ -213,10 +213,10 @@ class APIService {
     print(userId);
     // to get token from local storage
     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
-    print('http://localhost:8080/user/visitor/' + userId);
+    print('http://118.139.164.158:8080/user/visitor/' + userId);
     try {
       Response response =
-          await Dio().delete("http://localhost:8080/user/visitor/" + userId,
+          await Dio().delete("http://118.139.164.158:8080/user/visitor/" + userId,
               options: Options(headers: {
                 "Content-Type": "application/json",
                 "access-token": atoken,
@@ -240,7 +240,7 @@ class APIService {
     print(atoken);
     try {
       Response response =
-          await Dio().get("http://localhost:8080/security/active/visitors",
+          await Dio().get("http://118.139.164.158:8080/security/active/visitors",
               options: Options(headers: {
                 "Content-Type": "application/json",
                 "access-token": atoken,
@@ -271,7 +271,7 @@ class APIService {
     print(atoken);
     try {
       Response response =
-          await Dio().post("http://localhost:8080/security/verify/visitors",
+          await Dio().post("http://118.139.164.158:8080/security/verify/visitors",
               data: {"security_code": code},
               options: Options(headers: {
                 "Content-Type": "application/json",
@@ -291,7 +291,7 @@ class APIService {
 
     try {
       Response response = await Dio().post(
-          "http://localhost:8080/security/visitor/status",
+          "http://118.139.164.158:8080/security/visitor/status",
           data: {
             "user_id": userId,
             "visitor_id": visitorId,
