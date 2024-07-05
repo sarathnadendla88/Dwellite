@@ -13,7 +13,7 @@ import 'package:iconify_flutter/icons/fluent_mdl2.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:iconify_flutter/icons/ri.dart';
 
-UserType userType = UserType.resident;
+UserType? userType;
 
 class BottomBar extends StatefulWidget {
   const BottomBar({super.key});

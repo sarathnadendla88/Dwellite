@@ -1,11 +1,12 @@
 import 'dart:async';
-import 'dart:ffi';
 
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/theme/theme.dart';
 import 'package:dwellite/utils/loader_view.dart';
+import 'package:dwellite/utils/toast_helper.dart';
 import 'package:dwellite/utils/utility.dart';
+import 'package:dwellite/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,8 @@ class OTPScreen extends StatefulWidget {
 class _OTPScreenState extends State<OTPScreen> {
   Timer? countdownTimer;
   Duration myDuration = const Duration(minutes: 10);
-  final TextEditingController otpController = TextEditingController();
+  final TextEditingController otpController =
+      TextEditingController(text: "123456");
   final APIService _apiService = APIService.instance;
   final storage = const FlutterSecureStorage();
 
@@ -31,6 +33,20 @@ class _OTPScreenState extends State<OTPScreen> {
   void initState() {
     super.initState();
     startTimer();
+    _getId();
+  }
+
+  String? deviceId = "";
+  Future<void> _getId() async {
+    var otpData = await SharedPreferencesHelper().readData("otp");
+    // otpController.text = otpData;
+    ToastHelper().showLongToast(otpData.toString());
+    try {
+      deviceId = await Utils().getId();
+      print('Device ID: $deviceId');
+    } catch (e) {
+      print('Error obtaining device ID: $e');
+    }
   }
 
   void startTimer() {

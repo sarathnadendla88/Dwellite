@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:dwellite/core/api_service.dart';
@@ -6,7 +5,9 @@ import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/screens/screens.dart';
 //import 'package:dwellite/screens/auth/loginDTO.dart';
 import 'package:dwellite/theme/theme.dart';
+import 'package:dwellite/utils/constants.dart';
 import 'package:dwellite/utils/utility.dart';
+import 'package:dwellite/utils/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -23,6 +24,22 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController phoneController =
       TextEditingController(text: "9701425567");
   final APIService _apiService = APIService.instance;
+  String? deviceId="";
+
+  @override
+  void initState() {
+    super.initState();
+    _getId();
+  }
+
+  Future<void> _getId() async {
+    try {
+      deviceId = await Utils().getId();
+      print('Device ID: $deviceId');
+    } catch (e) {
+      print('Error obtaining device ID: $e');
+    }
+  }
 
   Future<void> login() async {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -30,18 +47,24 @@ class _LoginScreenState extends State<LoginScreen> {
       backgroundColor: Colors.green.shade300,
     ));
 
-    dynamic res = await _apiService.login(
-      phoneController.text,
-      "dhfgdshfghdsf",
-      userType.value,
-    );
+    dynamic res =
+        await _apiService.login(phoneController.text, deviceId!);
 
     var data = res.data['data'];
-    print(data);
     print(data['otp']);
 
-    SharedPreferencesHelper()
-        .saveData("localuserid", data['user_id'].toString());
+    SharedPreferencesHelper().saveData("localuserid", data['user_id'].toString());
+    SharedPreferencesHelper().saveData("otp", data['otp'].toString());
+
+
+    //SharedPreferencesHelper().saveData("usertype", data['user_type']);
+    if (data['user_type'] == UserType.resident.value) {
+      userType = UserType.resident;
+    } else if (data['user_type'] == UserType.guard.value) {
+      userType = UserType.guard;
+    } else {
+      userType = UserType.resident;
+    }
 
     if (data['otp'] != null) {
       Navigator.pushNamed(context, '/otp');
