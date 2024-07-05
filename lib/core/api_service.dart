@@ -72,7 +72,7 @@ class APIService {
   }
 
   Future<Response> login(
-      String phoneNumber, String deviceId, int userType) async {
+      String phoneNumber, String deviceId) async {
     try {
       // Example of calling the request method with parameters
       final response = await APIService.instance.request(
@@ -81,7 +81,6 @@ class APIService {
         param: {
           'phone_code': "+91",
           'phone_number': phoneNumber,
-          'user_type': userType,
           'device_id': deviceId
         },
         contentType: 'application/json',
@@ -146,7 +145,7 @@ class APIService {
     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
     print(atoken);
     try {
-      Response response = await Dio().get("http://118.139.164.158:8080/user/visitors",
+      Response response = await Dio().get("http://localhost:8080/user/visitors",
           options: Options(headers: {
             "Content-Type": "application/json",
             "access-token": atoken,
@@ -213,7 +212,7 @@ class APIService {
     print(userId);
     // to get token from local storage
     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
-    print('http://118.139.164.158:8080/user/visitor/' + userId);
+    print('http://localhost:8080/user/visitor/' + userId);
     try {
       Response response =
           await Dio().delete("http://118.139.164.158:8080/user/visitor/" + userId,
