@@ -1,11 +1,13 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/screens/screens.dart';
 //import 'package:dwellite/screens/auth/loginDTO.dart';
 import 'package:dwellite/theme/theme.dart';
 import 'package:dwellite/utils/constants.dart';
+import 'package:dwellite/utils/loader_view.dart';
 import 'package:dwellite/utils/utility.dart';
 import 'package:dwellite/utils/utils.dart';
 import 'package:flutter/gestures.dart';
@@ -21,10 +23,11 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   DateTime? backPressTime;
-  final TextEditingController phoneController =
-      TextEditingController(text: "9701425567");
+  final TextEditingController phoneController = TextEditingController();
+  String _phoneNumber = '';
+  String? _phoneValidationError;
   final APIService _apiService = APIService.instance;
-  String? deviceId="";
+  String? deviceId = "";
 
   @override
   void initState() {
@@ -41,39 +44,80 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> login() async {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: const Text('Processing Data'),
-      backgroundColor: Colors.green.shade300,
-    ));
+  @override
+  void dispose() {
+    phoneController.dispose();
+    super.dispose();
+  }
 
-    dynamic res =
+  void _validatePhoneNumber(String value) {
+    // Reset error message
+    setState(() {
+      _phoneValidationError = null;
+    });
+
+    // Validate phone number here
+    // Example validation: Check if the number has correct length or format
+    if (value.isEmpty) {
+      setState(() {
+        _phoneValidationError = 'Please enter a phone number';
+      });
+    } else {
+      // You can add more sophisticated validation here if needed
+      _phoneNumber = value;
+    }
+  }
+
+  Future<void> login() async {
+   LoaderView().pleaseWaitDialog(context);
+
+    Response<dynamic> res =
         await _apiService.login(phoneController.text, deviceId!);
 
-    var data = res.data['data'];
-    print(data['otp']);
+LoaderView().cancelDialog();
+    if (res.statusCode == 200) {
+      var data = res.data['data'];
+      print(data);
 
-    SharedPreferencesHelper().saveData("localuserid", data['user_id'].toString());
-    SharedPreferencesHelper().saveData("otp", data['otp'].toString());
-    SharedPreferencesHelper().saveIntData(Constants.USER_TYPE_DATA, data['user_type']);
+      SharedPreferencesHelper()
+          .saveData("localuserid", data['user_id'].toString());
+      SharedPreferencesHelper().saveData("otp", data['otp'].toString());
+      SharedPreferencesHelper()
+          .saveIntData(Constants.USER_TYPE_DATA, data['user_type']);
 
+      //SharedPreferencesHelper().saveData("usertype", data['user_type']);
+      if (data['user_type'] == UserType.resident.value) {
+        userType = UserType.resident;
+      } else if (data['user_type'] == UserType.guard.value) {
+        userType = UserType.guard;
+      } else {
+        userType = UserType.resident;
+      }
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-    //SharedPreferencesHelper().saveData("usertype", data['user_type']);
-    if (data['user_type'] == UserType.resident.value) {
-      userType = UserType.resident;
-    } else if (data['user_type'] == UserType.guard.value) {
-      userType = UserType.guard;
-    } else {
-      userType = UserType.resident;
-    }
-
-    if (data['otp'] != null) {
       Navigator.pushNamed(context, '/otp');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Error: ${res['Message']}'),
+        content: Text('Error: ${res.data['message']}'),
         backgroundColor: Colors.red.shade300,
       ));
+    }
+  }
+
+  void _submitForm() {
+    // Validate phone number on button tap
+    _validatePhoneNumber(phoneController.text);
+
+    // Check if validation passed
+    if (_phoneValidationError == null) {
+      // Validation passed, do something with _phoneNumber
+      print('Valid phone number: $_phoneNumber');
+      login();
+    } else {
+      // Validation failed, show error message
+      setState(() {
+        _phoneValidationError = 'Phone number is not valid';
+      });
     }
   }
 
@@ -154,7 +198,8 @@ class _LoginScreenState extends State<LoginScreen> {
   loginButton() {
     return GestureDetector(
       onTap: () {
-        login();
+        _submitForm();
+
         // Navigator.pushNamed(context, '/otp');
       },
       child: Container(
@@ -213,6 +258,9 @@ class _LoginScreenState extends State<LoginScreen> {
             Icons.keyboard_arrow_down_outlined,
             color: blackColor,
           ),
+          onChanged: (phone) {
+            _validatePhoneNumber(phone.completeNumber ?? '');
+          },
           textAlign: languageValue == 4 ? TextAlign.right : TextAlign.left,
           flagsButtonPadding:
               const EdgeInsets.symmetric(horizontal: fixPadding * 0.8),
@@ -221,6 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
             border: InputBorder.none,
             hintText: getTranslate(context, 'login.enter_mobile_number'),
             hintStyle: medium16Grey,
+            errorText: _phoneValidationError,
           ),
         ),
       ),

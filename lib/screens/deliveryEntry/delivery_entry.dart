@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/screens/bottom_bar.dart';
@@ -25,7 +26,8 @@ class _DeliveryEntryScreenState extends State<DeliveryEntryScreen> {
   final APIService _apiService = APIService.instance;
   VisitorType visitorType = VisitorType.services;
 
-  Future<void> addGuestVisitorCall() async {
+  Future<void> addDeilveryEntryCall() async {
+    LoaderView().pleaseWaitDialog(context);
     Map<String, dynamic> jsonObject = {
       "visitor_type": visitorType,
       "entry_date": dateController.text,
@@ -36,22 +38,19 @@ class _DeliveryEntryScreenState extends State<DeliveryEntryScreen> {
       }
     };
 
-    dynamic res =
+    Response<dynamic> res =
         await _apiService.addVisitorEntryFromGuard(jsonEncode(jsonObject));
 
-    print(res);
+    LoaderView().cancelDialog();
+    if (res.statusCode == 200) {
+      print(res);
+      var data = res.data['data'];
+      print(data);
 
-    var data = res.data['data'];
-    print(data);
-    print(res);
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
-
-    Navigator.popAndPushNamed(context, '/bottomBar');
-    if (data['access_token'] != null) {
-      // to save token in local storage
+      Navigator.popAndPushNamed(context, '/bottomBar');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Error: ${res['Message']}'),
+        content: Text('Error: ${res.data['message']}'),
         backgroundColor: Colors.red.shade300,
       ));
     }
@@ -116,10 +115,18 @@ class _DeliveryEntryScreenState extends State<DeliveryEntryScreen> {
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: GestureDetector(
         onTap: () {
-          LoaderView().pleaseWaitDialog(context);
-          addGuestVisitorCall();
-          Navigator.pop(context);
-          // Navigator.pushNamed(context, '/selectEntryAddress');
+          if (nameController.text.isEmpty) {
+            errorText("Please enter name.");
+          } else if (phoneController.text.isEmpty) {
+            errorText("Please enter phone number.");
+          } else if (dateController.text.isEmpty) {
+            errorText("Please select date.");
+          } else if (deliveryCompanyController.text.isEmpty) {
+            errorText("Please enter delivery company.");
+          } else {
+            addDeilveryEntryCall();
+            // Navigator.pushNamed(context, '/selectEntryAddress');
+          }
         },
         child: Container(
           margin: const EdgeInsets.all(fixPadding * 2.0),
@@ -342,5 +349,12 @@ class _DeliveryEntryScreenState extends State<DeliveryEntryScreen> {
         )
       ],
     );
+  }
+
+  void errorText(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red.shade300,
+    ));
   }
 }
