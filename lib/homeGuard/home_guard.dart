@@ -44,7 +44,10 @@ class _GuardHomeScreenState extends State<GuardHomeScreen> {
 
       Navigator.pushNamed(context, '/confirm');
     } else {
-      ToastHelper().showLongToast(res.data['message']);
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error: ${res.data['message']}'),
+        backgroundColor: Colors.red.shade300,
+      ));
     }
   }
 
@@ -257,7 +260,11 @@ class _GuardHomeScreenState extends State<GuardHomeScreen> {
               Expanded(
                 child: GestureDetector(
                   onTap: () {
-                    verifiySecurityCheck(securityCodeController.text);
+                    if (securityCodeController.text.isEmpty) {
+                      errorText("Please enter security code.");
+                    } else {
+                      verifiySecurityCheck(securityCodeController.text);
+                    }
                   },
                   child: Container(
                     height: 50.0,
@@ -305,6 +312,13 @@ class _GuardHomeScreenState extends State<GuardHomeScreen> {
         ],
       ),
     );
+  }
+
+  void errorText(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red.shade300,
+    ));
   }
 
   // Function to convert dynamic data to Map<String, String>

@@ -71,8 +71,7 @@ class APIService {
     }
   }
 
-  Future<Response> login(
-      String phoneNumber, String deviceId) async {
+  Future<Response<dynamic>> login(String phoneNumber, String deviceId) async {
     try {
       // Example of calling the request method with parameters
       final response = await APIService.instance.request(
@@ -96,9 +95,16 @@ class APIService {
         return response;
       }
     } on DioException catch (e) {
-      // Error: Handle network errors
-      print('Network error occurred: $e');
-      return e.response!.data;
+      // Handle Dio errors
+      if (e.response != null) {
+        // DioErrorType.RESPONSE occurs when received non-2xx status codes
+        print('Dio error response data: ${e.response?.data}');
+        return e.response!; // Return the response with error data
+      } else {
+        // DioErrorType.DEFAULT occurs when a more general error happens
+        print('Dio error: $e');
+        rethrow; // Rethrow the error to be handled elsewhere
+      }
     }
   }
 
@@ -124,7 +130,8 @@ class APIService {
   //   }
   // }
 
-  Future<Response> verifyOtp(int userId, String otp, String deviceId) async {
+  Future<Response<dynamic>> verifyOtp(
+      int userId, String otp, String deviceId) async {
     try {
       Response response = await Dio().post(
         "http://118.139.164.158:8080/user/verify",
@@ -134,9 +141,16 @@ class APIService {
       //returns the successful user data json object
       return response;
     } on DioException catch (e) {
-      //returns the error object if any
-
-      return e.response!.data;
+      // Handle Dio errors
+      if (e.response != null) {
+        // DioErrorType.RESPONSE occurs when received non-2xx status codes
+        print('Dio error response data: ${e.response?.data}');
+        return e.response!; // Return the response with error data
+      } else {
+        // DioErrorType.DEFAULT occurs when a more general error happens
+        print('Dio error: $e');
+        rethrow; // Rethrow the error to be handled elsewhere
+      }
     }
   }
 
@@ -160,7 +174,7 @@ class APIService {
     }
   }
 
-  Future<Response> addVisitor(
+  Future<Response<dynamic>> addVisitor(
       VisitorType userType, String date, String userName, String mobile) async {
     // to get token from local storage
     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
@@ -181,12 +195,20 @@ class APIService {
       //returns the successful user data json object
       return response;
     } on DioException catch (e) {
-      //returns the error object if any
-      return e.response?.data;
+      // Handle Dio errors
+      if (e.response != null) {
+        // DioErrorType.RESPONSE occurs when received non-2xx status codes
+        print('Dio error response data: ${e.response?.data}');
+        return e.response!; // Return the response with error data
+      } else {
+        // DioErrorType.DEFAULT occurs when a more general error happens
+        print('Dio error: $e');
+        rethrow; // Rethrow the error to be handled elsewhere
+      }
     }
   }
 
-  Future<Response> addVisitorEntryFromGuard(String jsonString) async {
+  Future<Response<dynamic>> addVisitorEntryFromGuard(String jsonString) async {
     // to get token from local storage
     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
     Map<String, dynamic> parsedJson = jsonDecode(jsonString);
@@ -198,24 +220,31 @@ class APIService {
                 "Content-Type": "application/json",
                 "access-token": atoken,
               }));
-      print("Tammini");
       print(response);
       //returns the successful user data json object
       return response;
     } on DioException catch (e) {
-      //returns the error object if any
-      return e.response?.data;
+      // Handle Dio errors
+      if (e.response != null) {
+        // DioErrorType.RESPONSE occurs when received non-2xx status codes
+        print('Dio error response data: ${e.response?.data}');
+        return e.response!; // Return the response with error data
+      } else {
+        // DioErrorType.DEFAULT occurs when a more general error happens
+        print('Dio error: $e');
+        rethrow; // Rethrow the error to be handled elsewhere
+      }
     }
   }
 
-  Future<Response> deleteVisitor(String userId) async {
+  Future<Response<dynamic>> deleteVisitor(String userId) async {
     print(userId);
     // to get token from local storage
     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
     print('http://localhost:8080/user/visitor/' + userId);
     try {
-      Response response =
-          await Dio().delete("http://118.139.164.158:8080/user/visitor/" + userId,
+      Response response = await Dio()
+          .delete("http://118.139.164.158:8080/user/visitor/" + userId,
               options: Options(headers: {
                 "Content-Type": "application/json",
                 "access-token": atoken,
@@ -225,21 +254,27 @@ class APIService {
       //returns the successful user data json object
       return response;
     } on DioException catch (e) {
-      //returns the error object if any
-      print("Tammini delete error");
-      print(e.response!.data);
-      return e.response!.data;
+      // Handle Dio errors
+      if (e.response != null) {
+        // DioErrorType.RESPONSE occurs when received non-2xx status codes
+        print('Dio error response data: ${e.response?.data}');
+        return e.response!; // Return the response with error data
+      } else {
+        // DioErrorType.DEFAULT occurs when a more general error happens
+        print('Dio error: $e');
+        rethrow; // Rethrow the error to be handled elsewhere
+      }
     }
   }
 
-  Future<Response> getActiveVisitorsList() async {
+  Future<Response<dynamic>> getActiveVisitorsList() async {
     // to get token from local storage
     String atoken = await SharedPreferencesHelper().readData('useraccesstoken');
     print("Sarath Token");
     print(atoken);
     try {
-      Response response =
-          await Dio().get("http://118.139.164.158:8080/security/active/visitors",
+      Response response = await Dio()
+          .get("http://118.139.164.158:8080/security/active/visitors",
               options: Options(headers: {
                 "Content-Type": "application/json",
                 "access-token": atoken,
@@ -248,18 +283,16 @@ class APIService {
       //returns the successful user data json object
       return response;
     } on DioException catch (e) {
-      // Handle DioError, which includes both network errors and HTTP errors
-      print("Dio Error: $e");
-
-      // Depending on your application's logic, you might want to handle specific types of errors differently.
-      // For example, returning e.response.data might be problematic if it's not of type Response.
-      // If you want to return the entire DioError, you can throw it again.
-      throw e;
-    } catch (e) {
-      // Handle other types of errors
-      print("Error: $e");
-      // You can throw the error or return an appropriate response here.
-      throw e;
+      // Handle Dio errors
+      if (e.response != null) {
+        // DioErrorType.RESPONSE occurs when received non-2xx status codes
+        print('Dio error response data: ${e.response?.data}');
+        return e.response!; // Return the response with error data
+      } else {
+        // DioErrorType.DEFAULT occurs when a more general error happens
+        print('Dio error: $e');
+        rethrow; // Rethrow the error to be handled elsewhere
+      }
     }
   }
 
@@ -269,8 +302,8 @@ class APIService {
     print('Get entry');
     print(atoken);
     try {
-      Response response =
-          await Dio().post("http://118.139.164.158:8080/security/verify/visitors",
+      Response response = await Dio()
+          .post("http://118.139.164.158:8080/security/verify/visitors",
               data: {"security_code": code},
               options: Options(headers: {
                 "Content-Type": "application/json",

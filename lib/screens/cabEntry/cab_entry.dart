@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/theme/theme.dart';
@@ -25,6 +26,7 @@ class _CabEntryScreenState extends State<CabEntryScreen> {
   VisitorType visitorType = VisitorType.cab;
 
   Future<void> addCabEntryCall() async {
+    LoaderView().pleaseWaitDialog(context);
     String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
     Map<String, dynamic> jsonObject = {
@@ -37,22 +39,19 @@ class _CabEntryScreenState extends State<CabEntryScreen> {
       }
     };
 
-    dynamic res =
+    Response<dynamic> res =
         await _apiService.addVisitorEntryFromGuard(jsonEncode(jsonObject));
 
-    print(res);
+    LoaderView().cancelDialog();
+    if (res.statusCode == 200) {
+      print(res);
+      var data = res.data['data'];
+      print(data);
 
-    var data = res.data['data'];
-    print(data);
-
-    Navigator.popAndPushNamed(context, '/bottomBar');
-
-    if (data['access_token'] != null) {
-      // to save token in local storage
       Navigator.popAndPushNamed(context, '/bottomBar');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Error: ${res['Message']}'),
+        content: Text('Error: ${res.data['message']}'),
         backgroundColor: Colors.red.shade300,
       ));
     }
@@ -118,10 +117,18 @@ class _CabEntryScreenState extends State<CabEntryScreen> {
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
       child: GestureDetector(
         onTap: () {
-          LoaderView().pleaseWaitDialog(context);
-          addCabEntryCall();
-          Navigator.pop(context);
-          // Navigator.pushNamed(context, '/selectEntryAddress');
+          if (nameController.text.isEmpty) {
+            errorText("Please enter name.");
+          } else if (cabNumberController.text.isEmpty) {
+            errorText("Please enter cab number.");
+          } else if (pickUpController.text.isEmpty) {
+            errorText("Please enter pickup location.");
+          } else if (cabCompanyController.text.isEmpty) {
+            errorText("Please enter cab company.");
+          } else {
+            addCabEntryCall();
+            // Navigator.pushNamed(context, '/selectEntryAddress');
+          }
         },
         child: Container(
           margin: const EdgeInsets.all(fixPadding * 2.0),
@@ -320,5 +327,12 @@ class _CabEntryScreenState extends State<CabEntryScreen> {
         )
       ],
     );
+  }
+
+  void errorText(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red.shade300,
+    ));
   }
 }

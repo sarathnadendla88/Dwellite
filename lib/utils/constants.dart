@@ -1,3 +1,8 @@
+class Constants {
+  static const String USER_TYPE_DATA = "USER_TYPE_DATA";
+  static const int maxRetryAttempts = 3;
+}
+
 enum UserType {
   resident(1001),
   admin(1003),

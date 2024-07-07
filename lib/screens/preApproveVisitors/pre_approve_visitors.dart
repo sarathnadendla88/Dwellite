@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
@@ -47,18 +48,25 @@ class _PreApproveVisitorsScreenState extends State<PreApproveVisitorsScreen> {
   VisitorType visitorType = VisitorType.guest;
 
   Future<bool> addVisitorCall() async {
-    dynamic res = await _apiService.addVisitor(visitorType, dateController.text,
-        nameController.text, phoneController.text);
+    Response<dynamic> res = await _apiService.addVisitor(visitorType,
+        dateController.text, nameController.text, phoneController.text);
 
-    var data = res.data['data'];
-    print(data);
-    print(res);
+    LoaderView().cancelDialog();
 
-    if (data != null) {
-      print("Tammini error 2");
-      return true;
+    if (res.statusCode == 200) {
+      var data = res.data['data'];
+      print(data);
+      if (data != null) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
-      print("Tammini error 3");
+      // stopTimer();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error: ${res.data['message']}'),
+        backgroundColor: Colors.red.shade300,
+      ));
       return false;
     }
   }
@@ -277,18 +285,26 @@ class _PreApproveVisitorsScreenState extends State<PreApproveVisitorsScreen> {
                             heightSpace,
                             height5Space,
                             submitButton(context, size, () {
-                              LoaderView().pleaseWaitDialog(context);
-                              var status = addVisitorCall();
-                              if (status == true) {
-                                Navigator.pop(context);
-                                Future.delayed(
-                                    const Duration(milliseconds: 500), () {
+                              if (nameController.text.isEmpty) {
+                                ErrorText("Please enter name.");
+                              } else if (phoneController.text.isEmpty) {
+                                ErrorText("Please enter phone number.");
+                              } else if (dateController.text.isEmpty) {
+                                ErrorText("Please select date.");
+                              } else {
+                                LoaderView().pleaseWaitDialog(context);
+                                var status = addVisitorCall();
+                                if (status == true) {
                                   Navigator.pop(context);
-                                });
-                                setState(() {
-                                  selectedNext = 0;
-                                  enterInNextText = "";
-                                });
+                                  Future.delayed(
+                                      const Duration(milliseconds: 500), () {
+                                    Navigator.pop(context);
+                                  });
+                                  setState(() {
+                                    selectedNext = 0;
+                                    enterInNextText = "";
+                                  });
+                                }
                               }
                             })
                           ],
@@ -1103,16 +1119,24 @@ class _PreApproveVisitorsScreenState extends State<PreApproveVisitorsScreen> {
                           heightSpace,
                           heightSpace,
                           submitButton(context, size, () {
-                            LoaderView().pleaseWaitDialog(context);
-                            addVisitorCall().then((bool status) {
-                              if (status == true) {
-                                Navigator.pop(context);
-                                Navigator.pop(context);
-                                Navigator.pop(context);
+                            if (nameController.text.isEmpty) {
+                              ErrorText("Please enter name.");
+                            } else if (phoneController.text.isEmpty) {
+                              ErrorText("Please enter phone number.");
+                            } else if (dateController.text.isEmpty) {
+                              ErrorText("Please select date.");
+                            } else {
+                              LoaderView().pleaseWaitDialog(context);
+                              addVisitorCall().then((bool status) {
+                                if (status == true) {
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
+                                  Navigator.pop(context);
 
-                                dateController.clear();
-                              }
-                            });
+                                  dateController.clear();
+                                }
+                              });
+                            }
                           }),
                           heightSpace,
                         ],
@@ -1564,5 +1588,12 @@ class _PreApproveVisitorsScreenState extends State<PreApproveVisitorsScreen> {
         ),
       ),
     );
+  }
+
+  void ErrorText(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red.shade300,
+    ));
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
@@ -62,21 +63,25 @@ class _VisitorsScreenState extends State<VisitorsScreen> {
   ];
 
   Future<bool> deleteVisitorCall(String userId) async {
-    dynamic res = await _apiService.deleteVisitor(userId);
-    print("Tammini delete 2");
-    print(res);
-    print("Tammini delete 3");
-    var data = res.data['data'];
-
-    if (data != null) {
-      return true;
+    Response<dynamic> res = await _apiService.deleteVisitor(userId);
+    if (res.statusCode == 200) {
+      print(res);
+      var data = res.data['data'];
+      if (data != null) {
+        return true;
+      } else {
+        return false;
+      }
     } else {
+       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error: ${res.data['message']}'),
+        backgroundColor: Colors.red.shade300,
+      ));
       return false;
     }
   }
 
   Future<List<VisitorItem>> getVisitors() async {
-  
     String res = await _apiService.getVisitorsList();
 
     Map<String, dynamic> data = jsonDecode(res);

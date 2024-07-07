@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/theme/theme.dart';
@@ -29,21 +30,26 @@ class _InOutScreenState extends State<InOutScreen>
   }
 
   Future<void> getActiveVisitors() async {
-    dynamic res = await _apiService.getActiveVisitorsList();
+    Response<dynamic> res = await _apiService.getActiveVisitorsList();
+    if (res.statusCode == 200) {
+      print(res);
+      setState(() {
+        insideList = convertDynamicToListOfMaps(res.data['data']['IN']);
+        waitingList = convertDynamicToListOfMaps(res.data['data']['PENDING']);
+      });
 
-    print("Sarath Res");
-    print(res);
-    setState(() {
-      insideList = convertDynamicToListOfMaps(res.data['data']['IN']);
-      waitingList = convertDynamicToListOfMaps(res.data['data']['PENDING']);
-    });
+      print("Data IN");
+      print(insideList);
+      print("Data PENDING");
+      print(waitingList);
 
-    print("Data IN");
-    print(insideList);
-    print("Data PENDING");
-    print(waitingList);
-
-    print("Sarath Data");
+      print("Sarath Data");
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error: ${res.data['message']}'),
+        backgroundColor: Colors.red.shade300,
+      ));
+    }
   }
 
   Future<void> changeVisitorStatus(

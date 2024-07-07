@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dio/dio.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/theme/theme.dart';
@@ -24,15 +25,14 @@ class OTPScreen extends StatefulWidget {
 class _OTPScreenState extends State<OTPScreen> {
   Timer? countdownTimer;
   Duration myDuration = const Duration(minutes: 10);
-  final TextEditingController otpController =
-      TextEditingController(text: "123456");
+  final TextEditingController otpController = TextEditingController();
   final APIService _apiService = APIService.instance;
   final storage = const FlutterSecureStorage();
 
   @override
   void initState() {
     super.initState();
-    startTimer();
+    // startTimer();
     _getId();
   }
 
@@ -80,31 +80,33 @@ class _OTPScreenState extends State<OTPScreen> {
   }
 
   Future<void> verifyOtp() async {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: const Text('Processing Data'),
+      backgroundColor: Colors.green.shade300,
+    ));
     String userid = await SharedPreferencesHelper().readData('localuserid');
-    dynamic res = await _apiService.verifyOtp(
+    Response<dynamic> res = await _apiService.verifyOtp(
       int.parse(userid),
       otpController.text,
-      "dhfgdshfghdsf",
+      deviceId!,
     );
-    print("Tammini error 2");
-    print(res);
-    print("Tammini error 3");
-    var data = res.data['data'];
-    print(data);
-    print(res);
-    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    LoaderView().cancelDialog();
+    if (res.statusCode == 200) {
+      var data = res.data['data'];
+      print(data);
+      if (data['access_token'] != null) {
+        // to save token in local storage
+        SharedPreferencesHelper()
+            .saveData('useraccesstoken', data['access_token']);
 
-    if (data['access_token'] != null) {
-      // to save token in local storage
-      SharedPreferencesHelper()
-          .saveData('useraccesstoken', data['access_token']);
-
-      stopTimer();
-      Navigator.popAndPushNamed(context, '/bottomBar');
+        // stopTimer();
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        Navigator.popAndPushNamed(context, '/bottomBar');
+      }
     } else {
-      stopTimer();
+      // stopTimer();
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Error: ${res['Message']}'),
+        content: Text('Error: ${res.data['message']}'),
         backgroundColor: Colors.red.shade300,
       ));
     }
@@ -183,8 +185,8 @@ class _OTPScreenState extends State<OTPScreen> {
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   if (myDuration == const Duration(seconds: 0)) {
-                    resetTimer();
-                    startTimer();
+                    // resetTimer();
+                    // startTimer();
                   }
                 }),
         ],
@@ -199,8 +201,12 @@ class _OTPScreenState extends State<OTPScreen> {
         if (otpController.text.length > 5) {
           LoaderView().pleaseWaitDialog(context);
           verifyOtp();
-        } else {}
-
+        } else if (otpController.text.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: const Text("Please enter OTP."),
+            backgroundColor: Colors.red.shade300,
+          ));
+        }
         // Timer(const Duration(seconds: 3), () {
         //   stopTimer();
         //   Navigator.popAndPushNamed(context, '/bottomBar');
