@@ -1,5 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:device_info/device_info.dart';
+import 'package:flutter/material.dart';
 
 class Utils {
   Future<String?> getId() async {
@@ -12,5 +13,13 @@ class Utils {
       var androidDeviceInfo = await deviceInfo.androidInfo;
       return androidDeviceInfo.androidId; // unique ID on Android
     }
+  }
+
+  
+   static void showError(BuildContext context, String message) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(message),
+      backgroundColor: Colors.red.shade300,
+    ));
   }
 }

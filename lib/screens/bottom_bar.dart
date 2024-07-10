@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dwellite/homeGuard/home_guard.dart';
 import 'package:dwellite/localization/localization_const.dart';
+import 'package:dwellite/screens/admin/admin.dart';
 import 'package:dwellite/screens/inOut/in_out.dart';
 import 'package:dwellite/screens/screens.dart';
 import 'package:dwellite/theme/theme.dart';
@@ -49,20 +50,19 @@ class _BottomBarState extends State<BottomBar> {
     }
     setState(() {
       pages = userType == UserType.resident
-        ? const [
-            HomeScreen(),
-            ChatsScreen(),
-            ServiceScreen(),
-            ProfileScreen(),
-          ]
-        : const [
-            GuardHomeScreen(),
-            InOutScreen(),
-            ChatsScreen(),
-            SettingsScreen(),
-          ];
+          ? const [
+              AdminScreen(),
+              HomeScreen(),
+              ServiceScreen(),
+              ProfileScreen(),
+            ]
+          : const [
+              GuardHomeScreen(),
+              InOutScreen(),
+              ChatsScreen(),
+              SettingsScreen(),
+            ];
     });
-    
   }
 
   final sendMessage = [
@@ -132,10 +132,11 @@ class _BottomBarState extends State<BottomBar> {
       currentIndex: selectedIndex,
       items: userType == UserType.resident
           ? [
+              itemWidget(Ep.user, getTranslate(context, 'bottom_bar.admin')),
               itemWidget(
                   Ri.home_4_line, getTranslate(context, 'bottom_bar.home')),
-              itemWidget(Mdi.message_outline,
-                  getTranslate(context, 'bottom_bar.chats')),
+              // itemWidget(Mdi.message_outline,
+              //     getTranslate(context, 'bottom_bar.chats')),
               itemWidget(FluentMdl2.repair,
                   getTranslate(context, 'bottom_bar.service')),
               itemWidget(Ep.user, getTranslate(context, 'bottom_bar.profile'))

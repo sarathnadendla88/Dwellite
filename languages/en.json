@@ -40,7 +40,7 @@
         "register": "Register",
         "email_address": "Email address",
         "mobile_number": "Mobile number",
-        "user_name": "User name"
+        "user_name": "Name"
     },
     "book_amenities_proceed": {
         "book_amenity": "Book amenity",
@@ -124,7 +124,6 @@
         "complaint_suggestion": "Complaint & suggestion",
         "community": "Community",
         "new": "New",
-
         "add_new_visitor": "Add new visitor",
         "guest_entry": "Guest entry",
         "cab_entry": "Cab entry",
@@ -233,14 +232,9 @@
         "camera": "Camera",
         "gallery": "Gallery",
         "remove": "Remove",
-
-        
         "enter_phone_number": "Enter phone number",
-    
         "enter_email_address": "Enter email address",
-        
         "enter_name": "Enter name"
-        
     },
     "get_support": {
         "get_support": "Get support",
@@ -250,8 +244,6 @@
         "enter_your_message": "Enter your message",
         "issue_type": "Issue type",
         "enter_topic": "Enter topic / issue type",
-
- 
         "enter_issue_type": "Enter topic / issue type"
     },
     "language": {
@@ -326,10 +318,7 @@
         "logout_text": "Are you sure you want to logout?",
         "no": "No",
         "yes": "Yes",
-
-        
         "sure_text": "Are you sure you want to logout?",
-
         "call_admin": "Call admin",
         "call_secretory": "Call Secretory",
         "quick_contact": "Quick Contact",
@@ -388,16 +377,11 @@
         "download": "Download",
         "pre_approve_visitors": "Pre approve visitors"
     },
-
-
-    
     "allowed": {
         "allowed": "Allowed",
         "text": "Let’s Guest enter the society",
         "back_to_home": "Back to home"
     },
-   
-    
     "cab_entry": {
         "cab_entry": "Cab entry",
         "continue": "Continue",
@@ -450,13 +434,17 @@
         "guest_name": "Guest name",
         "enter_guest_name": "Enter guest name"
     },
-   
     "in_out": {
         "In_Out": "In - Out",
         "in": "In",
         "out": "Out",
         "inside": "Inside",
         "waiting": "Waiting"
+    },
+    "admin": {
+        "admin": "Admin",
+        "pending": "Pending",
+        "completed": "Completed"
     },
     "message": {
         "message": "Message"
@@ -486,22 +474,17 @@
         "serviceman_name": "Serviceman name",
         "enter_serviceman_name": "Enter serviceman name"
     },
-    
-   
-
- 
-   
     "terms_and_condition": {
         "terms_condition": "Terms  & condition"
     },
     "bottom_bar": {
+        "admin": "Admin",
         "home": "Home",
         "chats": "Chats",
         "service": "Service",
         "profile": "Profile",
         "send_message": "Send message",
         "security_alert": "Security Alert",
-
         "in_out": "In-out",
         "messages": "Messages",
         "settings": "Settings"

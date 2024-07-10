@@ -16,7 +16,7 @@ class APIService {
     return 'http://118.139.164.158:8080';
     // }
 
-    return 'production url';
+    // return 'production url';
   }
 
   Future<Response> request(
@@ -108,6 +108,32 @@ class APIService {
     }
   }
 
+  Future<Response<dynamic>> registerData(String jsonString) async {
+    // to get token from local storage
+    Map<String, dynamic> parsedJson = jsonDecode(jsonString);
+    try {
+      Response response = await Dio().post("$baseUrl/register",
+          data: parsedJson,
+          options: Options(headers: {
+            "Content-Type": "application/json",
+          }));
+      print(response);
+      //returns the successful user data json object
+      return response;
+    } on DioException catch (e) {
+      // Handle Dio errors
+      if (e.response != null) {
+        // DioErrorType.RESPONSE occurs when received non-2xx status codes
+        print('Dio error response data: ${e.response?.data}');
+        return e.response!; // Return the response with error data
+      } else {
+        // DioErrorType.DEFAULT occurs when a more general error happens
+        print('Dio error: $e');
+        rethrow; // Rethrow the error to be handled elsewhere
+      }
+    }
+  }
+
   // Future<Response> login(
   //     String phoneNumber, String deviceId, int userType) async {
   //   try {
@@ -134,7 +160,7 @@ class APIService {
       int userId, String otp, String deviceId) async {
     try {
       Response response = await Dio().post(
-        "http://118.139.164.158:8080/user/verify",
+        "$baseUrl/user/verify",
         data: {"user_id": userId, "otp": otp, "device_id": deviceId},
       );
 
@@ -179,17 +205,16 @@ class APIService {
     // to get token from local storage
     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
     try {
-      Response response =
-          await Dio().post("http://118.139.164.158:8080/user/visitors",
-              data: {
-                "visitor_type": userType.value,
-                "entry_date": date,
-                "visitor_details": {"name": userName, "phone_number": mobile}
-              },
-              options: Options(headers: {
-                "Content-Type": "application/json",
-                "access-token": atoken,
-              }));
+      Response response = await Dio().post("$baseUrl/user/visitors",
+          data: {
+            "visitor_type": userType.value,
+            "entry_date": date,
+            "visitor_details": {"name": userName, "phone_number": mobile}
+          },
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "access-token": atoken,
+          }));
       print("Tammini");
       print(response);
       //returns the successful user data json object
@@ -213,13 +238,12 @@ class APIService {
     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
     Map<String, dynamic> parsedJson = jsonDecode(jsonString);
     try {
-      Response response =
-          await Dio().post("http://118.139.164.158:8080/user/visitors",
-              data: parsedJson,
-              options: Options(headers: {
-                "Content-Type": "application/json",
-                "access-token": atoken,
-              }));
+      Response response = await Dio().post("$baseUrl/user/visitors",
+          data: parsedJson,
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "access-token": atoken,
+          }));
       print(response);
       //returns the successful user data json object
       return response;
@@ -243,12 +267,11 @@ class APIService {
     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
     print('http://localhost:8080/user/visitor/' + userId);
     try {
-      Response response = await Dio()
-          .delete("http://118.139.164.158:8080/user/visitor/" + userId,
-              options: Options(headers: {
-                "Content-Type": "application/json",
-                "access-token": atoken,
-              }));
+      Response response = await Dio().delete("$baseUrl/user/visitor/$userId",
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "access-token": atoken,
+          }));
       print("Tammini deleted");
       print(response);
       //returns the successful user data json object
@@ -273,12 +296,39 @@ class APIService {
     print("Sarath Token");
     print(atoken);
     try {
-      Response response = await Dio()
-          .get("http://118.139.164.158:8080/security/active/visitors",
-              options: Options(headers: {
-                "Content-Type": "application/json",
-                "access-token": atoken,
-              }));
+      Response response = await Dio().get("$baseUrl/security/active/visitors",
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "access-token": atoken,
+          }));
+
+      //returns the successful user data json object
+      return response;
+    } on DioException catch (e) {
+      // Handle Dio errors
+      if (e.response != null) {
+        // DioErrorType.RESPONSE occurs when received non-2xx status codes
+        print('Dio error response data: ${e.response?.data}');
+        return e.response!; // Return the response with error data
+      } else {
+        // DioErrorType.DEFAULT occurs when a more general error happens
+        print('Dio error: $e');
+        rethrow; // Rethrow the error to be handled elsewhere
+      }
+    }
+  }
+
+  Future<Response<dynamic>> getAdminVisitors() async {
+    // to get token from local storage
+    String atoken = await SharedPreferencesHelper().readData('useraccesstoken');
+    print("Sarath Token");
+    print(atoken);
+    try {
+      Response response = await Dio().get("$baseUrl/admin/view/residents",
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "access-token": atoken,
+          }));
 
       //returns the successful user data json object
       return response;
@@ -302,13 +352,12 @@ class APIService {
     print('Get entry');
     print(atoken);
     try {
-      Response response = await Dio()
-          .post("http://118.139.164.158:8080/security/verify/visitors",
-              data: {"security_code": code},
-              options: Options(headers: {
-                "Content-Type": "application/json",
-                "access-token": atoken,
-              }));
+      Response response = await Dio().post("$baseUrl/security/verify/visitors",
+          data: {"security_code": code},
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "access-token": atoken,
+          }));
       //returns the successful user data json object
       return response;
     } on DioException catch (e) {
@@ -322,8 +371,7 @@ class APIService {
     String atoken = await SharedPreferencesHelper().readData('useraccesstoken');
 
     try {
-      Response response = await Dio().post(
-          "http://118.139.164.158:8080/security/visitor/status",
+      Response response = await Dio().post("$baseUrl/security/visitor/status",
           data: {
             "user_id": userId,
             "visitor_id": visitorId,
