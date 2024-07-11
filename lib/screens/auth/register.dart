@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/theme/theme.dart';
+import 'package:dwellite/utils/constants.dart';
 import 'package:dwellite/utils/loader_view.dart';
 import 'package:dwellite/utils/utility.dart';
 import 'package:dwellite/utils/utils.dart';
@@ -64,8 +65,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (res.statusCode == 200) {
       print(res);
       var data = res.data['data'];
-      SharedPreferencesHelper()
-          .saveData('useraccesstoken', data['access_token']);
+      SharedPreferencesHelper().saveData('useraccesstoken', data['access_token']);
+      SharedPreferencesHelper().saveIntData(Constants.ISVERIFIED, data['is_verified']);
+
       Navigator.popAndPushNamed(context, '/bottomBar');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(

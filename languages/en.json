@@ -455,7 +455,8 @@
         "approve": "Approve",
         "delete": "Delete",
         "all": "All",
-        "completed": "Completed"
+        "completed": "Completed",
+        "resident_details": "Resident Details"
     },
     "message": {
         "message": "Message"

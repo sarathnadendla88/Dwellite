@@ -1,6 +1,8 @@
 class Constants {
   static const String USER_TYPE_DATA = "USER_TYPE_DATA";
   static const String ISADMIN = "ISADMIN";
+  static const String ISVERIFIED = "ISVERIFIED";
+
 
   static const int maxRetryAttempts = 3;
 }

@@ -50,9 +50,10 @@ class _BottomBarState extends State<BottomBar> {
       }
     } else if (userTypeData == 1002) {
       userType = UserType.guard;
-    }else {
+    } else {
       userType = UserType.resident;
     }
+
     setState(() {
       pages = userType == UserType.resident
           ? const [
@@ -186,6 +187,8 @@ class _BottomBarState extends State<BottomBar> {
     );
   }
 
+  
+
   floatingButton() {
     return FloatingActionButton(
       onPressed: () {
@@ -239,7 +242,7 @@ class _BottomBarState extends State<BottomBar> {
                         index,
                         sendMessage[index]['image'].toString(),
                         sendMessage[index]['name'].toString(), () {
-                      Navigator.popAndPushNamed(context, '/message');
+                       Navigator.popAndPushNamed(context, '/message');
                     });
                   },
                 ),

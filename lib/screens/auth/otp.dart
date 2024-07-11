@@ -99,6 +99,7 @@ class _OTPScreenState extends State<OTPScreen> {
         // to save token in local storage
         SharedPreferencesHelper().saveData('useraccesstoken', data['access_token']);
         SharedPreferencesHelper().saveIntData(Constants.ISADMIN, data['is_admin']);
+        SharedPreferencesHelper().saveIntData(Constants.ISVERIFIED, data['is_verified']);
         
         // stopTimer();
         ScaffoldMessenger.of(context).hideCurrentSnackBar();

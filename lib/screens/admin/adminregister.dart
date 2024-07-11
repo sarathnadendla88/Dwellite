@@ -5,7 +5,6 @@ import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/theme/theme.dart';
 import 'package:dwellite/utils/loader_view.dart';
-import 'package:dwellite/utils/utility.dart';
 import 'package:dwellite/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
