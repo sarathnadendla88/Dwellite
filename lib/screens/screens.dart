@@ -41,3 +41,6 @@ export 'package:dwellite/screens/selectEntryAddress/select_entry_address.dart';
 export 'package:dwellite/screens/confirmAndSendNotification/confirm_and_send_notification.dart';
 export 'package:dwellite/screens/ringing/ringing.dart';
 export 'package:dwellite/screens/allowed/allowed.dart';
+export 'package:dwellite/screens/admin/admin.dart';
+export 'package:dwellite/screens/admin/adminregister.dart';
+

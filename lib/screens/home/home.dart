@@ -1,5 +1,9 @@
+import 'dart:ui';
+
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/theme/theme.dart';
+import 'package:dwellite/utils/constants.dart';
+import 'package:dwellite/utils/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/carbon.dart';
@@ -50,6 +54,86 @@ class _HomeScreenState extends State<HomeScreen> {
       "route": '/helpDesk'
     },
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sharedPrefData();
+  }
+
+  Future<void> sharedPrefData() async {
+    var isVerified =
+        await SharedPreferencesHelper().readIntData(Constants.ISVERIFIED);
+    if (isVerified == 0) {
+      dialogWithBlurContent();
+    }
+  }
+
+  void dialogWithBlurContent() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return WillPopScope(
+          onWillPop: () async => false, // Disable back button press
+          child: Dialog(
+            backgroundColor: Colors.transparent, // Transparent background
+            insetPadding:
+                EdgeInsets.symmetric(horizontal: 16.0, vertical: 60.0),
+            child: Stack(
+              children: <Widget>[
+                Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    decoration: BoxDecoration(
+                      color: Colors.white
+                          .withOpacity(0.1), // Adjust opacity for blur effect
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(
+                          sigmaX: 10.0, sigmaY: 10.0), // Adjust blur values
+                      child: Container(
+                        padding: const EdgeInsets.all(16.0),
+                        decoration: const BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              'Pending',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 20.0),
+                            ),
+                            SizedBox(height: 10.0),
+                            const Text(
+                              'Please contact admin for approval.',
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 16.0),
+                            ),
+                            SizedBox(height: 20.0),
+                            ElevatedButton(
+                              onPressed: () {
+                                SharedPreferencesHelper().clearPreferences();
+                                Navigator.pushNamed(context, '/login');
+                              },
+                              child: const Text('Logout',
+                                  style: TextStyle(fontSize: 18.0)),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {

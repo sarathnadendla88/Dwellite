@@ -1,4 +1,5 @@
 import 'package:dwellite/localization/localization.dart';
+import 'package:dwellite/screens/admin/admin.dart';
 import 'package:dwellite/screens/visitors/visitors.dart';
 import 'package:dwellite/theme/theme.dart';
 import 'package:flutter/material.dart';
@@ -118,6 +119,12 @@ class _MyAppState extends State<MyApp> {
           type: PageTransitionType.rightToLeft,
           settings: settings,
         );
+      case '/adminregister':
+        return PageTransition(
+          child: const AdminRegisterScreen(),
+          type: PageTransitionType.rightToLeft,
+          settings: settings,
+        );
       case '/otp':
         return PageTransition(
           child: const OTPScreen(),
@@ -133,6 +140,12 @@ class _MyAppState extends State<MyApp> {
       case '/home':
         return PageTransition(
           child: const HomeScreen(),
+          type: PageTransitionType.rightToLeft,
+          settings: settings,
+        );
+      case '/admin':
+        return PageTransition(
+          child: const AdminScreen(),
           type: PageTransitionType.rightToLeft,
           settings: settings,
         );

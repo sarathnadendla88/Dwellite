@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dwellite/homeGuard/home_guard.dart';
 import 'package:dwellite/localization/localization_const.dart';
+import 'package:dwellite/screens/admin/admin.dart';
 import 'package:dwellite/screens/inOut/in_out.dart';
 import 'package:dwellite/screens/screens.dart';
 import 'package:dwellite/theme/theme.dart';
@@ -42,27 +43,38 @@ class _BottomBarState extends State<BottomBar> {
         await SharedPreferencesHelper().readIntData(Constants.USER_TYPE_DATA);
     if (userTypeData == 1001) {
       userType = UserType.resident;
+      var isAdmin =
+          await SharedPreferencesHelper().readIntData(Constants.ISADMIN);
+      if (isAdmin == 1) {
+        userType = UserType.admin;
+      }
     } else if (userTypeData == 1002) {
       userType = UserType.guard;
     } else {
       userType = UserType.resident;
     }
+
     setState(() {
       pages = userType == UserType.resident
-        ? const [
-            HomeScreen(),
-            ChatsScreen(),
-            ServiceScreen(),
-            ProfileScreen(),
-          ]
-        : const [
-            GuardHomeScreen(),
-            InOutScreen(),
-            ChatsScreen(),
-            SettingsScreen(),
-          ];
+          ? const [
+              HomeScreen(),
+              ServiceScreen(),
+              ProfileScreen(),
+            ]
+          : userType == UserType.admin
+              ? const [
+                  AdminScreen(),
+                  HomeScreen(),
+                  ServiceScreen(),
+                  ProfileScreen(),
+                ]
+              : const [
+                  GuardHomeScreen(),
+                  InOutScreen(),
+                  ChatsScreen(),
+                  SettingsScreen(),
+                ];
     });
-    
   }
 
   final sendMessage = [
@@ -110,7 +122,9 @@ class _BottomBarState extends State<BottomBar> {
         body: pages.elementAt(selectedIndex),
         bottomNavigationBar: bottomBar(),
         floatingActionButton:
-            userType == UserType.resident ? floatingButton() : const Text(''),
+            (userType == UserType.resident || userType == UserType.admin)
+                ? floatingButton()
+                : const Text(''),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
@@ -134,31 +148,46 @@ class _BottomBarState extends State<BottomBar> {
           ? [
               itemWidget(
                   Ri.home_4_line, getTranslate(context, 'bottom_bar.home')),
-              itemWidget(Mdi.message_outline,
-                  getTranslate(context, 'bottom_bar.chats')),
+              // itemWidget(Mdi.message_outline,
+              //     getTranslate(context, 'bottom_bar.chats')),
               itemWidget(FluentMdl2.repair,
                   getTranslate(context, 'bottom_bar.service')),
               itemWidget(Ep.user, getTranslate(context, 'bottom_bar.profile'))
             ]
-          : [
-              itemWidget(
-                  Ri.home_4_line, getTranslate(context, 'bottom_bar.home')),
-              BottomNavigationBarItem(
-                  icon: const Icon(
-                    CupertinoIcons.arrow_up_arrow_down,
-                    size: 22,
-                  ),
-                  label: getTranslate(context, 'bottom_bar.in_out')),
-              itemWidget(Mdi.message_outline,
-                  getTranslate(context, 'bottom_bar.chats')),
-              BottomNavigationBarItem(
-                  icon: const Icon(
-                    CupertinoIcons.gear,
-                  ),
-                  label: getTranslate(context, 'bottom_bar.settings')),
-            ],
+          : userType == UserType.admin
+              ? [
+                  itemWidget(
+                      Ep.user, getTranslate(context, 'bottom_bar.admin')),
+                  itemWidget(
+                      Ri.home_4_line, getTranslate(context, 'bottom_bar.home')),
+                  // itemWidget(Mdi.message_outline,
+                  //     getTranslate(context, 'bottom_bar.chats')),
+                  itemWidget(FluentMdl2.repair,
+                      getTranslate(context, 'bottom_bar.service')),
+                  itemWidget(
+                      Ep.user, getTranslate(context, 'bottom_bar.profile'))
+                ]
+              : [
+                  itemWidget(
+                      Ri.home_4_line, getTranslate(context, 'bottom_bar.home')),
+                  BottomNavigationBarItem(
+                      icon: const Icon(
+                        CupertinoIcons.arrow_up_arrow_down,
+                        size: 22,
+                      ),
+                      label: getTranslate(context, 'bottom_bar.in_out')),
+                  itemWidget(Mdi.message_outline,
+                      getTranslate(context, 'bottom_bar.chats')),
+                  BottomNavigationBarItem(
+                      icon: const Icon(
+                        CupertinoIcons.gear,
+                      ),
+                      label: getTranslate(context, 'bottom_bar.settings')),
+                ],
     );
   }
+
+  
 
   floatingButton() {
     return FloatingActionButton(
@@ -213,7 +242,7 @@ class _BottomBarState extends State<BottomBar> {
                         index,
                         sendMessage[index]['image'].toString(),
                         sendMessage[index]['name'].toString(), () {
-                      Navigator.popAndPushNamed(context, '/message');
+                       Navigator.popAndPushNamed(context, '/message');
                     });
                   },
                 ),

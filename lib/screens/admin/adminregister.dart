@@ -4,22 +4,20 @@ import 'package:dio/dio.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/theme/theme.dart';
-import 'package:dwellite/utils/constants.dart';
 import 'package:dwellite/utils/loader_view.dart';
-import 'package:dwellite/utils/utility.dart';
 import 'package:dwellite/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class AdminRegisterScreen extends StatefulWidget {
+  const AdminRegisterScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<AdminRegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends State<AdminRegisterScreen> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -59,16 +57,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
     };
 
     Response<dynamic> res =
-        await _apiService.registerData(jsonEncode(jsonObject));
+        await _apiService.adminRegisterResident(jsonEncode(jsonObject));
 
     LoaderView().cancelDialog();
     if (res.statusCode == 200) {
       print(res);
       var data = res.data['data'];
-      SharedPreferencesHelper().saveData('useraccesstoken', data['access_token']);
-      SharedPreferencesHelper().saveIntData(Constants.ISVERIFIED, data['is_verified']);
-
-      Navigator.popAndPushNamed(context, '/bottomBar');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(res.data['message']),
+        backgroundColor: Colors.green.shade300,
+      ));
+      Navigator.pop(context);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Error: ${res.data['message']}'),
@@ -148,7 +147,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   pleaseText() {
     return Text(
-      getTranslate(context, 'register.please_text'),
+      getTranslate(context, 'adminregister.please_text'),
       textAlign: TextAlign.center,
       style: medium14Grey77,
     );
@@ -156,7 +155,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   registerText() {
     return Text(
-      getTranslate(context, 'register.REGISTER'),
+      getTranslate(context, 'adminregister.REGISTER'),
       style: semibold21Primary,
       textAlign: TextAlign.center,
     );
@@ -198,7 +197,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ),
         alignment: Alignment.center,
         child: Text(
-          getTranslate(context, 'register.register'),
+          getTranslate(context, 'adminregister.register'),
           style: semibold18White,
         ),
       ),
@@ -247,7 +246,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               size: 20,
             ),
           ),
-          hintText: getTranslate(context, 'register.email_address'),
+          hintText: getTranslate(context, 'adminregister.email_address'),
           hintStyle: medium16Grey,
         ),
       ),
@@ -295,7 +294,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               size: 20,
             ),
           ),
-          hintText: getTranslate(context, 'register.mobile_number'),
+          hintText: getTranslate(context, 'adminregister.mobile_number'),
           hintStyle: medium16Grey,
         ),
       ),
@@ -344,7 +343,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               size: 20,
             ),
           ),
-          hintText: getTranslate(context, 'register.user_name'),
+          hintText: getTranslate(context, 'adminregister.user_name'),
           hintStyle: medium16Grey,
         ),
       ),
@@ -515,3 +514,4 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 }
+
