@@ -107,6 +107,7 @@ class APIService {
       }
     }
   }
+  
 
   Future<Response<dynamic>> registerData(String jsonString) async {
     // to get token from local storage
@@ -116,6 +117,34 @@ class APIService {
           data: parsedJson,
           options: Options(headers: {
             "Content-Type": "application/json",
+          }));
+      print(response);
+      //returns the successful user data json object
+      return response;
+    } on DioException catch (e) {
+      // Handle Dio errors
+      if (e.response != null) {
+        // DioErrorType.RESPONSE occurs when received non-2xx status codes
+        print('Dio error response data: ${e.response?.data}');
+        return e.response!; // Return the response with error data
+      } else {
+        // DioErrorType.DEFAULT occurs when a more general error happens
+        print('Dio error: $e');
+        rethrow; // Rethrow the error to be handled elsewhere
+      }
+    }
+  }
+
+ Future<Response<dynamic>> adminRegisterResident(String jsonString) async {
+    // to get token from local storage
+     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
+    Map<String, dynamic> parsedJson = jsonDecode(jsonString);
+    try {
+      Response response = await Dio().post("$baseUrl/admin/add/resident",
+          data: parsedJson,
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "access-token": atoken
           }));
       print(response);
       //returns the successful user data json object
@@ -318,7 +347,7 @@ class APIService {
     }
   }
 
-  Future<Response<dynamic>> getAdminVisitors() async {
+  Future<Response<dynamic>> getAdminResidents() async {
     // to get token from local storage
     String atoken = await SharedPreferencesHelper().readData('useraccesstoken');
     print("Sarath Token");
@@ -354,6 +383,48 @@ class APIService {
     try {
       Response response = await Dio().post("$baseUrl/security/verify/visitors",
           data: {"security_code": code},
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "access-token": atoken,
+          }));
+      //returns the successful user data json object
+      return response;
+    } on DioException catch (e) {
+      //returns the error object if any
+      return e.response?.data;
+    }
+  }
+
+  Future<Response<dynamic>> approveResidentStatus(
+      int userId,  int residentStatus) async {
+    String atoken = await SharedPreferencesHelper().readData('useraccesstoken');
+
+    try {
+      Response response = await Dio().post("$baseUrl/admin/approve/resident",
+          data: {
+            "user_id": userId,
+            "status": residentStatus,
+           
+          },
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "access-token": atoken,
+          }));
+      //returns the successful user data json object
+      return response;
+    } on DioException catch (e) {
+      //returns the error object if any
+      return e.response?.data;
+    }
+  }
+
+  Future<Response<dynamic>> deleteResident(
+      int userId) async {
+    String atoken = await SharedPreferencesHelper().readData('useraccesstoken');
+
+    try {
+      Response response = await Dio().delete("$baseUrl/admin/resident/$userId",
+          
           options: Options(headers: {
             "Content-Type": "application/json",
             "access-token": atoken,

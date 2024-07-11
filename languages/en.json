@@ -42,6 +42,14 @@
         "mobile_number": "Mobile number",
         "user_name": "Name"
     },
+    "adminregister": {
+        "please_text": "Hello admin please create resident account",
+        "REGISTER": "Register Resident",
+        "register": "Register",
+        "email_address": "Email address",
+        "mobile_number": "Mobile number",
+        "user_name": "Name"
+    },
     "book_amenities_proceed": {
         "book_amenity": "Book amenity",
         "select_dates": "Select Dates",
@@ -444,6 +452,9 @@
     "admin": {
         "admin": "Admin",
         "pending": "Pending",
+        "approve": "Approve",
+        "delete": "Delete",
+        "all": "All",
         "completed": "Completed"
     },
     "message": {

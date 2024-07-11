@@ -119,6 +119,12 @@ class _MyAppState extends State<MyApp> {
           type: PageTransitionType.rightToLeft,
           settings: settings,
         );
+      case '/adminregister':
+        return PageTransition(
+          child: const AdminRegisterScreen(),
+          type: PageTransitionType.rightToLeft,
+          settings: settings,
+        );
       case '/otp':
         return PageTransition(
           child: const OTPScreen(),

@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/theme/theme.dart';
+import 'package:dwellite/utils/constants.dart';
 import 'package:dwellite/utils/loader_view.dart';
 import 'package:dwellite/utils/toast_helper.dart';
 import 'package:dwellite/utils/utility.dart';
@@ -96,9 +97,9 @@ class _OTPScreenState extends State<OTPScreen> {
       print(data);
       if (data['access_token'] != null) {
         // to save token in local storage
-        SharedPreferencesHelper()
-            .saveData('useraccesstoken', data['access_token']);
-
+        SharedPreferencesHelper().saveData('useraccesstoken', data['access_token']);
+        SharedPreferencesHelper().saveIntData(Constants.ISADMIN, data['is_admin']);
+        
         // stopTimer();
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         Navigator.popAndPushNamed(context, '/bottomBar');

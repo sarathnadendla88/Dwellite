@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
+import 'package:dwellite/screens/admin/adminregister.dart';
 import 'package:dwellite/theme/theme.dart';
 import 'package:dwellite/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:iconify_flutter/iconify_flutter.dart';
 
 class AdminScreen extends StatefulWidget {
   const AdminScreen({super.key});
@@ -26,11 +28,11 @@ class _AdminScreenState extends State<AdminScreen>
   void initState() {
     tabController = TabController(length: 2, vsync: this);
     super.initState();
-    visitorsActiveData = getAdminVisitors();
+    visitorsActiveData = getAdminResidents();
   }
 
-  Future<void> getAdminVisitors() async {
-    Response<dynamic> res = await _apiService.getAdminVisitors();
+  Future<void> getAdminResidents() async {
+    Response<dynamic> res = await _apiService.getAdminResidents();
     if (res.statusCode == 200) {
       print(res);
       setState(() {
@@ -52,16 +54,38 @@ class _AdminScreenState extends State<AdminScreen>
     }
   }
 
-  Future<void> changeVisitorStatus(
-      int userId, int visitorId, int visitorStatus) async {
-    dynamic res = await _apiService.visitorStatusChangePost(
-        userId, visitorId, visitorStatus);
+  Future<void> approveResidentStatus(int userId, int visitorStatus) async {
+    Response<dynamic> res =
+        await _apiService.approveResidentStatus(userId, visitorStatus);
+    if (res.statusCode == 200) {
+      print("Resident Res");
+      print(res);
 
-    print("Sarath Res");
-    print(res);
+      print("Resident Data");
+      getAdminResidents();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error: ${res.data['message']}'),
+        backgroundColor: Colors.red.shade300,
+      ));
+    }
+  }
 
-    print("Sarath Data");
-    getAdminVisitors();
+  Future<void> deleteResident(int userId) async {
+    Response<dynamic> res = await _apiService.deleteResident(userId);
+
+    if (res.statusCode == 200) {
+      print("Delete Res");
+      print(res);
+
+      print("Delete Data");
+      getAdminResidents();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error: ${res.data['message']}'),
+        backgroundColor: Colors.red.shade300,
+      ));
+    }
   }
 
   @override
@@ -80,6 +104,11 @@ class _AdminScreenState extends State<AdminScreen>
       ),
       body: Column(
         children: [
+          height5Space,
+          height5Space,
+          addResidentFromAdmin(),
+          height5Space,
+          height5Space,
           tabBar(),
           Expanded(
             child: TabBarView(
@@ -109,16 +138,16 @@ class _AdminScreenState extends State<AdminScreen>
 
             // final Map<dynamic, dynamic> result = json.decode(jsonString);
             return listContent(
-                index,
-                // insideList[index]['image'].toString(),
-                "assets/home/guests.png",
-                "${completedList[index]['block_name']} | ${completedList[index]['phone_number']} | ${completedList[index]['email']}",
-                completedList[index]['name'],
-                getTranslate(context, 'admin.pending'),
-                redColor,
-                completedList[index]['id'],
-                completedList[index]['id'],
-                3002);
+              index,
+              // insideList[index]['image'].toString(),
+              "assets/home/guests.png",
+              "${completedList[index]['block_name']} | ${completedList[index]['phone_number']} | ${completedList[index]['email']}",
+              completedList[index]['name'],
+              getTranslate(context, 'admin.delete'),
+              redColor,
+              completedList[index]['id'],
+              1, "completed",
+            );
           },
         ));
   }
@@ -142,106 +171,177 @@ class _AdminScreenState extends State<AdminScreen>
                 "assets/home/guests.png",
                 "${pendingList[index]['block_name']} | ${pendingList[index]['phone_number']} | ${pendingList[index]['email']}",
                 pendingList[index]['name'],
-                getTranslate(context, 'admin.pending'),
-                redColor,
+                getTranslate(context, 'admin.approve'),
+                greenColor,
                 pendingList[index]['id'],
-                pendingList[index]['id'],
-                3003);
+                1,
+                "pending");
           },
         ));
   }
 
-  listContent(int index, image, text, name, boxText, boxColor, userId,
-      visitorId, visitorStatus) {
+  listContent(int index, image, text, name, boxText, boxColor, userId, status,
+      residentStatus) {
     return Container(
-        padding: const EdgeInsets.all(fixPadding * 0.8),
-        margin: const EdgeInsets.symmetric(vertical: fixPadding),
-        decoration: BoxDecoration(
-          color: whiteColor,
-          borderRadius: BorderRadius.circular(10.0),
-          boxShadow: [
-            BoxShadow(
-              color: shadowColor.withOpacity(0.2),
-              blurRadius: 6.0,
-            )
-          ],
-        ),
-        child: GestureDetector(
-          onTap: () {
-            // changeVisitorStatus(
-            //     int.parse(userId), int.parse(visitorId), visitorStatus);
-          },
-          child: Row(
-            children: [
-              Container(
-                height: 58,
-                width: 58,
-                padding: const EdgeInsets.all(fixPadding * 0.7),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF5F5F5),
-                  borderRadius: BorderRadius.circular(5.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: shadowColor.withOpacity(0.2),
-                      blurRadius: 6.0,
-                    )
-                  ],
-                ),
-                alignment: Alignment.center,
-                child: Image.asset(
-                  image,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              widthSpace,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      name,
-                      style: semibold15Black33,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    heightBox(3.0),
-                    Text(
-                      text,
-                      style: medium14Grey,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    heightBox(3.0),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.call,
-                          color: blueColor,
-                          size: 15,
-                        ),
-                        Expanded(
-                          child: Text(
-                            text,
-                            style: medium14Black33,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                width: 60,
-                padding: const EdgeInsets.all(fixPadding * 0.7),
-                decoration: BoxDecoration(
-                  color: boxColor,
-                  borderRadius: BorderRadius.circular(5.0),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  boxText,
-                  style: medium14White,
+      padding: const EdgeInsets.all(fixPadding * 0.8),
+      margin: const EdgeInsets.symmetric(vertical: fixPadding),
+      decoration: BoxDecoration(
+        color: whiteColor,
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: shadowColor.withOpacity(0.2),
+            blurRadius: 6.0,
+          )
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            height: 58,
+            width: 58,
+            padding: const EdgeInsets.all(fixPadding * 0.7),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF5F5F5),
+              borderRadius: BorderRadius.circular(5.0),
+              boxShadow: [
+                BoxShadow(
+                  color: shadowColor.withOpacity(0.2),
+                  blurRadius: 6.0,
+                )
+              ],
+            ),
+            alignment: Alignment.center,
+            child: Image.asset(
+              image,
+              fit: BoxFit.cover,
+            ),
+          ),
+          widthSpace,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: semibold15Black33,
                   overflow: TextOverflow.ellipsis,
                 ),
+                heightBox(3.0),
+                Text(
+                  text,
+                  style: medium14Grey,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                heightBox(3.0),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.call,
+                      color: blueColor,
+                      size: 15,
+                    ),
+                    Expanded(
+                      child: Text(
+                        text,
+                        style: medium14Black33,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              if (residentStatus == "pending") {
+                approveResidentStatus(int.parse(userId), status);
+              } else if (residentStatus == "completed") {
+                deleteResident(int.parse(userId));
+              }
+            },
+            child: Container(
+              width: 60,
+              padding: const EdgeInsets.all(fixPadding * 0.7),
+              decoration: BoxDecoration(
+                color: boxColor,
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              alignment: Alignment.center,
+              child: Text(
+                boxText,
+                style: medium14White,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // "Once you add resident there is no need to approve.By default it is approved",
+  addResidentFromAdmin() {
+    final size = MediaQuery.of(context).size;
+    return GestureDetector(
+        onTap: () {
+          // Navigator.pushNamed(context, '/adminregister');
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AdminRegisterScreen(),
+            ),
+          ).then((value) {
+            visitorsActiveData = getAdminResidents();
+          });
+        },
+        child: Container(
+          width: size.width,
+          margin: const EdgeInsets.symmetric(horizontal: fixPadding * 0.75),
+          padding: const EdgeInsets.all(fixPadding),
+          decoration: BoxDecoration(
+            color: whiteColor,
+            borderRadius: BorderRadius.circular(10.0),
+            boxShadow: [
+              BoxShadow(
+                color: shadowColor.withOpacity(0.2),
+                blurRadius: 6.0,
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    height: 48.0,
+                    width: 48.0,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        image: AssetImage(
+                          "assets/home/members.png",
+                        ),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              heightBox(fixPadding * 0.8),
+              const Text(
+                "Add Resident",
+                style: semibold15Black33,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const Text(
+                "Once you add resident there is no need to approve.By default it is approved",
+                style: medium14Grey,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
@@ -275,7 +375,7 @@ class _AdminScreenState extends State<AdminScreen>
                       "${getTranslate(context, "Pending")}(${pendingList.length})"),
               Tab(
                   text:
-                      "${getTranslate(context, "Completed")}(${completedList.length})"),
+                      "${getTranslate(context, "All")}(${completedList.length})"),
             ],
           ),
         ),
