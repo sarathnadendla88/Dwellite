@@ -116,6 +116,9 @@ class _OTPScreenState extends State<OTPScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{}) as Map;
+    otpController.text = arguments['loginotp'];
     final size = MediaQuery.of(context).size;
     String strDigits(int n) => n.toString().padLeft(2, '0');
     final minutes = strDigits(myDuration.inMinutes.remainder(60));
@@ -256,6 +259,7 @@ class _OTPScreenState extends State<OTPScreen> {
 
   otpField() {
     return Pinput(
+      controller: otpController,
       length: 6,
       cursor: Container(
         height: 22,

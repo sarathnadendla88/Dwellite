@@ -95,7 +95,8 @@ LoaderView().cancelDialog();
       }
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-      Navigator.pushNamed(context, '/otp');
+      Navigator.pushNamed(context, '/otp', arguments: {'loginotp': data['otp'].toString()});
+       
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Error: ${res.data['message']}'),
