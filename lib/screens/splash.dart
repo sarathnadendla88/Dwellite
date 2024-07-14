@@ -64,11 +64,12 @@ class _SplashScreenState extends State<SplashScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        heightBox(fixPadding * 10.0),
-        const Icon(
-          Icons.home_work_outlined,
-          color: primaryColor,
-          size: 48.0,
+        heightBox(fixPadding * 30.0),
+        Image.asset(
+          "assets/icon.png",
+          height: 80,
+          width: 80,
+          fit: BoxFit.cover,
         ),
         heightSpace,
         const Text(
@@ -104,7 +105,7 @@ class _SplashScreenState extends State<SplashScreen> {
   bottomImage(Size size) {
     return Image.asset(
       "assets/splash/image.png",
-      height: size.height * 0.4,
+      height: size.height * 0.2,
       width: double.maxFinite,
       fit: BoxFit.cover,
     );
