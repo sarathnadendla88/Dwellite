@@ -1,11 +1,15 @@
+import 'package:dwellite/core/firebase_apis.dart';
 import 'package:dwellite/localization/localization_const.dart';
+import 'package:dwellite/models/chat_user.dart';
+import 'package:dwellite/models/message.dart';
 import 'package:dwellite/theme/theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class MessageScreen extends StatefulWidget {
-  const MessageScreen({super.key});
+  final ChatUser user;
+
+  const MessageScreen({super.key, required this.user});
 
   @override
   State<MessageScreen> createState() => _MessageScreenState();
@@ -164,15 +168,24 @@ class _MessageScreenState extends State<MessageScreen> {
       child: GestureDetector(
         onTap: () {
           if (messageController.text.isNotEmpty) {
-            setState(() {
-              messageList.add({
-                "message": messageController.text,
-                "time": DateFormat.jm().format(DateTime.now()),
-                "isMe": true
-              });
-              messageController.clear();
-              messageList;
-            });
+            if (messageList.isEmpty) {
+              //on first message (add user to my_user collection of chat user)
+              FirebaseApis.sendFirstMessage(
+                  widget.user, messageController.text, Type.text);
+            } else {
+              //simply send message
+              FirebaseApis.sendMessage(widget.user, messageController.text, Type.text);
+            }
+            messageController.text = '';
+            // setState(() {
+            //   messageList.add({
+            //     "message": messageController.text,
+            //     "time": DateFormat.jm().format(DateTime.now()),
+            //     "isMe": true
+            //   });
+            //   messageController.clear();
+            //   messageList;
+            // });
           }
         },
         child: Container(

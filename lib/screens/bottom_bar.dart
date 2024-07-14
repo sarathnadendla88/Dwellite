@@ -59,6 +59,7 @@ class _BottomBarState extends State<BottomBar> {
           ? const [
               HomeScreen(),
               ServiceScreen(),
+              ChatsScreen(),
               ProfileScreen(),
             ]
           : userType == UserType.admin
@@ -66,6 +67,7 @@ class _BottomBarState extends State<BottomBar> {
                   AdminScreen(),
                   HomeScreen(),
                   ServiceScreen(),
+                  ChatsScreen(),
                   ProfileScreen(),
                 ]
               : const [
@@ -148,10 +150,10 @@ class _BottomBarState extends State<BottomBar> {
           ? [
               itemWidget(
                   Ri.home_4_line, getTranslate(context, 'bottom_bar.home')),
-              // itemWidget(Mdi.message_outline,
-              //     getTranslate(context, 'bottom_bar.chats')),
               itemWidget(FluentMdl2.repair,
                   getTranslate(context, 'bottom_bar.service')),
+              itemWidget(Mdi.message_outline,
+                  getTranslate(context, 'bottom_bar.chats')),
               itemWidget(Ep.user, getTranslate(context, 'bottom_bar.profile'))
             ]
           : userType == UserType.admin
@@ -160,10 +162,10 @@ class _BottomBarState extends State<BottomBar> {
                       Ep.user, getTranslate(context, 'bottom_bar.admin')),
                   itemWidget(
                       Ri.home_4_line, getTranslate(context, 'bottom_bar.home')),
-                  // itemWidget(Mdi.message_outline,
-                  //     getTranslate(context, 'bottom_bar.chats')),
                   itemWidget(FluentMdl2.repair,
                       getTranslate(context, 'bottom_bar.service')),
+                  itemWidget(Mdi.message_outline,
+                      getTranslate(context, 'bottom_bar.chats')),
                   itemWidget(
                       Ep.user, getTranslate(context, 'bottom_bar.profile'))
                 ]
@@ -186,8 +188,6 @@ class _BottomBarState extends State<BottomBar> {
                 ],
     );
   }
-
-  
 
   floatingButton() {
     return FloatingActionButton(
@@ -242,7 +242,7 @@ class _BottomBarState extends State<BottomBar> {
                         index,
                         sendMessage[index]['image'].toString(),
                         sendMessage[index]['name'].toString(), () {
-                       Navigator.popAndPushNamed(context, '/message');
+                      Navigator.popAndPushNamed(context, '/message');
                     });
                   },
                 ),

@@ -1,4 +1,8 @@
+import 'package:dio/dio.dart';
+import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
+import 'package:dwellite/models/chat_user.dart';
+import 'package:dwellite/screens/messages/messages.dart';
 import 'package:dwellite/theme/theme.dart';
 import 'package:dwellite/widget/column_builder.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,82 +18,36 @@ class ChatsScreen extends StatefulWidget {
 class _ChatsScreenState extends State<ChatsScreen> {
   final tabs = [translate('chats.chats'), translate('chats.residents')];
 
-  int selectedIndex = 0;
+  final APIService _apiService = APIService.instance;
+  late Future<void> visitorsActiveData;
+  late List<Map<String, String>> completeList = [];
 
-  final chatsList = [
-    {
-      "image": "assets/messages/image1.png",
-      "name": "Cody Fisher",
-      "lastMessage": "Hello, Good morning",
-      "time": "2.00am"
-    },
-    {
-      "image": "assets/messages/image2.png",
-      "name": "Albert Flores",
-      "lastMessage": "Hello, Good morning",
-      "time": "2.00am"
-    },
-    {
-      "image": "assets/messages/image3.png",
-      "name": "Divya",
-      "lastMessage": "Hello, Good morning",
-      "time": "2.00am"
-    },
-    {
-      "image": "assets/messages/image4.png",
-      "name": "Albert Flores",
-      "lastMessage": "Hello, Good morning",
-      "time": "2.00am"
-    },
-    {
-      "image": "assets/messages/image5.png",
-      "name": "Marvin McKinney",
-      "lastMessage": "Hello, Good morning",
-      "time": "2.00am"
-    },
-    {
-      "image": "assets/messages/image6.png",
-      "name": "Jerome Bell",
-      "lastMessage": "Hello, Good morning",
-      "time": "2.00am"
-    },
-    {
-      "image": "assets/messages/image7.png",
-      "name": "Sarath",
-      "lastMessage": "Hello, Good morning",
-      "time": "2.00am"
-    },
-    {
-      "image": "assets/messages/image8.png",
-      "name": "Annette Black",
-      "lastMessage": "Hello, Good morning",
-      "time": "2.00am"
-    },
-    {
-      "image": "assets/messages/image9.png",
-      "name": "Jerome Bell",
-      "lastMessage": "Hello, Good morning",
-      "time": "2.00am"
-    },
-    {
-      "image": "assets/messages/image10.png",
-      "name": "Jerome Bell",
-      "lastMessage": "Hello, Good morning",
-      "time": "2.00am"
-    },
-    {
-      "image": "assets/messages/image11.png",
-      "name": "Leslie Alexander",
-      "lastMessage": "Hello, Good morning",
-      "time": "2.00am"
-    },
-    {
-      "image": "assets/messages/image12.png",
-      "name": "jeklin Shah",
-      "lastMessage": "Hello, Good morning",
-      "time": "2.00am"
-    },
-  ];
+  @override
+  void initState() {
+    super.initState();
+    visitorsActiveData = getAdminResidents();
+  }
+
+  Future<void> getAdminResidents() async {
+    Response<dynamic> res = await _apiService.getAdminResidents();
+    if (res.statusCode == 200) {
+      print(res);
+      setState(() {
+        completeList = convertDynamicToListOfMaps(res.data['data']['all']);
+      });
+      print(completeList);
+      print("Data Complete");
+
+      print("Sarath Data");
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Error: ${res.data['message']}'),
+        backgroundColor: Colors.red.shade300,
+      ));
+    }
+  }
+
+  int selectedIndex = 0;
 
   final residentList = [
     {
@@ -182,28 +140,29 @@ class _ChatsScreenState extends State<ChatsScreen> {
             getTranslate(context, 'chats.chats'),
             style: semibold22Black33,
           ),
-          // actions: [
-          //   IconButton(
-          //     onPressed: () {
-          //       Navigator.pushNamed(context, '/search');
-          //     },
-          //     icon: const Icon(
-          //       Icons.search,
-          //       size: 22,
-          //       color: primaryColor,
-          //     ),
-          //   )
-          // ],
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/search');
+              },
+              icon: const Icon(
+                Icons.search,
+                size: 22,
+                color: primaryColor,
+              ),
+            )
+          ],
         ),
-        body: Center(child: const Text("Coming soon"))
-        // Column(
-        //   children: [
-        //     tabBar(),
-        //     if (selectedIndex == 0) chatsListContent(),
-        //     if (selectedIndex == 1) residentsListContent()
-        //   ],
-        // ),
-        );
+        // body: Center(child: const Text("Coming soon"))
+        body: Center(
+          child: Column(
+            children: [
+              tabBar(),
+              if (selectedIndex == 0) chatsListContent(),
+              if (selectedIndex == 1) residentsListContent()
+            ],
+          ),
+        ));
   }
 
   residentsListContent() {
@@ -280,7 +239,21 @@ class _ChatsScreenState extends State<ChatsScreen> {
                         width5Space,
                         InkWell(
                           onTap: () {
-                            Navigator.pushNamed(context, '/message');
+                            ChatUser user = ChatUser(
+                                image: '',
+                                about: 'Hey i am Dwellite',
+                                name: '',
+                                createdAt: '',
+                                isOnline: false,
+                                id: '',
+                                lastActive: '',
+                                email: '',
+                                pushToken: '');
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => MessageScreen(user: user)));
+                            // Navigator.pushNamed(context, '/message');
                           },
                           child: const Icon(
                             CupertinoIcons.ellipses_bubble,
@@ -307,12 +280,26 @@ class _ChatsScreenState extends State<ChatsScreen> {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(
             fixPadding * 2.0, fixPadding, fixPadding * 2.0, fixPadding * 8.0),
-        itemCount: chatsList.length,
+        itemCount: completeList.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: fixPadding),
             child: InkWell(
               onTap: () {
+                ChatUser user = ChatUser(
+                    image: '',
+                    about: 'Hey i am Dwellite',
+                    name: completeList[index]['name'] ?? "",
+                    createdAt: '',
+                    isOnline: false,
+                    id: completeList[index]['id'] ?? "0",
+                    lastActive: '',
+                    email: completeList[index]['email'] ?? "",
+                    pushToken: '');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => MessageScreen(user: user)));
                 Navigator.pushNamed(context, '/message');
               },
               child: Row(
@@ -320,11 +307,12 @@ class _ChatsScreenState extends State<ChatsScreen> {
                   Container(
                     height: 50.0,
                     width: 50.0,
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         image: AssetImage(
-                          chatsList[index]['image'].toString(),
+                          // completeList[index]['image'].toString(),
+                          "assets/messages/image5.png",
                         ),
                       ),
                     ),
@@ -340,13 +328,14 @@ class _ChatsScreenState extends State<ChatsScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                chatsList[index]['name'].toString(),
+                                completeList[index]['name'].toString(),
                                 style: medium16Primary,
                                 overflow: TextOverflow.ellipsis,
                               ),
                               height5Space,
                               Text(
-                                chatsList[index]['lastMessage'].toString(),
+                                // completeList[index]['lastMessage'].toString(),
+                                completeList[index]['block_name'].toString(),
                                 style: medium14Grey,
                                 overflow: TextOverflow.ellipsis,
                               )
@@ -354,7 +343,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                           ),
                         ),
                         Text(
-                          chatsList[index]['time'].toString(),
+                          completeList[index]['requested_date'].toString(),
                           style: semibold14Grey,
                         )
                       ],
@@ -403,5 +392,30 @@ class _ChatsScreenState extends State<ChatsScreen> {
         ),
       ),
     );
+  }
+
+  List<Map<String, String>> convertDynamicToListOfMaps(dynamic data) {
+    List<Map<String, String>> resultList = [];
+
+    // Check if data is a List<dynamic>
+    if (data is List<dynamic>) {
+      // Iterate through each item in the list
+      for (var item in data) {
+        // Check if item is a Map<String, dynamic>
+        if (item is Map<String, dynamic>) {
+          // Create a new Map<String, String> for each item
+          Map<String, String> resultMap = {};
+          // Iterate through each key-value pair in the map
+          item.forEach((key, value) {
+            // Convert value to String and add to resultMap
+            resultMap[key] = value.toString();
+          });
+          // Add resultMap to resultList
+          resultList.add(resultMap);
+        }
+      }
+    }
+
+    return resultList;
   }
 }

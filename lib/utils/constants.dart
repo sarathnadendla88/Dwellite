@@ -1,8 +1,15 @@
 class Constants {
   static const String USER_TYPE_DATA = "USER_TYPE_DATA";
   static const String ISADMIN = "ISADMIN";
-  static const String ISVERIFIED = "ISVERIFIED";
+  static const String USERID = "USERID";
+  static String USERIDCONST = "";
 
+  static const String ISVERIFIED = "ISVERIFIED";
+  static const String USERNAME = "USERNAME";
+  static String USERNAMECONST = "";
+
+  static const String USEREMAIL = "USEREMAIL";
+  static String USEREMAILCONST = "";
 
   static const int maxRetryAttempts = 3;
 }
