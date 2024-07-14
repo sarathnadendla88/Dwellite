@@ -17,7 +17,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   void initState() {
-    nameController.text = "Tammini Venkat";
+    nameController.text = "Venkat";
     emailController.text = "tammini@gmail.com";
     phoneController.text = "+91 1234567890";
     super.initState();
@@ -54,7 +54,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           userImage(size),
           heightSpace,
           const Text(
-            "Tammini Venkat",
+            "Venkat",
             textAlign: TextAlign.center,
             style: semibold18Primary,
           ),

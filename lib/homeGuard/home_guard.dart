@@ -99,7 +99,7 @@ class _GuardHomeScreenState extends State<GuardHomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Sarath Nadendla",
+                    "Sarath",
                     style: semibold16Black33,
                     overflow: TextOverflow.ellipsis,
                   ),

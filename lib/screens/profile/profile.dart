@@ -493,7 +493,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              "Tammini Venkat",
+                              "Venkat",
                               style: semibold18Primary,
                               overflow: TextOverflow.ellipsis,
                             ),

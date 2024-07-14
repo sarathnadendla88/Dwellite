@@ -24,7 +24,7 @@ class _MembersScreenState extends State<MembersScreen>
     },
     {
       "image": "assets/members/member2.png",
-      "name": "Sarath Nadendla",
+      "name": "Sarath",
       "homeNumber": "Block A-421",
       "societyName": "Dwellite society",
     },
@@ -111,7 +111,7 @@ class _MembersScreenState extends State<MembersScreen>
     },
     {
       "image": "assets/members/member2.png",
-      "name": "Sarath Nadendla",
+      "name": "Sarath",
       "homeNumber": "Block A-421",
       "societyName": "Dwellite society",
     },
@@ -132,7 +132,7 @@ class _MembersScreenState extends State<MembersScreen>
     },
     {
       "image": "assets/members/member2.png",
-      "name": "Sarath Nadendla",
+      "name": "Sarath",
       "homeNumber": "Block A-421",
       "societyName": "Dwellite society",
     },

@@ -43,7 +43,7 @@ class _CallScreenState extends State<CallScreen> {
                 ),
                 heightSpace,
                 const Text(
-                  "Sarath Nadendla",
+                  "Sarath",
                   style: semibold18Black33,
                   textAlign: TextAlign.center,
                 ),
