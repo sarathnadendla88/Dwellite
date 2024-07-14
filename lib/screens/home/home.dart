@@ -139,41 +139,43 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      extendBody: true,
-      appBar: AppBar(
-        titleSpacing: 20.0,
-        backgroundColor: whiteColor,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        toolbarHeight: 65.0,
-        title: header(),
-        actions: [notificationButton(context)],
-      ),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.only(bottom: fixPadding * 9.5),
-        children: [
-          // GestureDetector(
-          //   onTap: () {
-          //     Navigator.pushNamed(context, '/calling');
-          //   },
-          //   child: Container(
-          //     padding: const EdgeInsets.fromLTRB(
-          //         fixPadding * 2.0, 0.0, fixPadding * 2.0, fixPadding * 2.0),
-          //     color: whiteColor,
-          //     child: Column(
-          //       crossAxisAlignment: CrossAxisAlignment.start,
-          //       children: [
-          //        // banner(),
-          //       //  communityTitle(),
-          //       ],
-          //     ),
-          //   ),
-          // ),
-          communityListContent(size),
-        ],
-      ),
-    );
+        extendBody: true,
+        appBar: AppBar(
+          titleSpacing: 20.0,
+          backgroundColor: whiteColor,
+          elevation: 0,
+          automaticallyImplyLeading: false,
+          toolbarHeight: 65.0,
+          title: header(),
+          actions: [notificationButton(context)],
+        ),
+        body: Container(
+          color: f6f3Color,
+          child: ListView(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.only(bottom: fixPadding * 9.5),
+            children: [
+              // GestureDetector(
+              //   onTap: () {
+              //     Navigator.pushNamed(context, '/calling');
+              //   },
+              //   child: Container(
+              //     padding: const EdgeInsets.fromLTRB(
+              //         fixPadding * 2.0, 0.0, fixPadding * 2.0, fixPadding * 2.0),
+              //     color: whiteColor,
+              //     child: Column(
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //        // banner(),
+              //       //  communityTitle(),
+              //       ],
+              //     ),
+              //   ),
+              // ),
+              communityListContent(size),
+            ],
+          ),
+        ));
   }
 
   notificationButton(BuildContext context) {
@@ -247,6 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        heightBox(10.0),
                         Text(
                           commumityList[index]['name'].toString(),
                           style: semibold16Black33,
@@ -268,8 +271,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Image.asset(
                         commumityList[index]['image'].toString(),
-                        height: size.width * 0.16,
-                        width: size.width * 0.16,
+                        height: size.width * 0.12,
+                        width: size.width * 0.12,
                       )
                     ],
                   )
