@@ -23,7 +23,7 @@
         "login": "Login",
         "verification_text": "*we will sent OTP for verification",
         "enter_mobile_number": "Enter mobile number",
-        "please_text": "Hello users please login your account",
+        "please_text": "Hello users please login into your account",
         "LOGIN": "LOGIN"
     },
     "otp": {
