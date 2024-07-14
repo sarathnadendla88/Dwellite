@@ -142,10 +142,10 @@ class _GuardHomeScreenState extends State<GuardHomeScreen> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: fixPadding * 2.0,
-                crossAxisSpacing: fixPadding * 2.0,
-                childAspectRatio: 1.3,
+                crossAxisCount: 1,
+                mainAxisSpacing: fixPadding * 1.0,
+                // crossAxisSpacing: fixPadding * 2.0,
+                childAspectRatio: 3.9,
               ),
               children: [
                 visitorType(size, "assets/home/guests.png",
@@ -156,14 +156,14 @@ class _GuardHomeScreenState extends State<GuardHomeScreen> {
                     getTranslate(context, 'home.cab_entry'), () {
                   Navigator.pushNamed(context, '/cabEntry');
                 }),
-                visitorType(size, "assets/home/food-delivery.png",
-                    getTranslate(context, 'home.delivery_entry'), () {
+                visitorType(size, "assets/home/maid.png",
+                    "Other Entries", () {
                   Navigator.pushNamed(context, '/deliveryEntry');
                 }),
-                visitorType(size, "assets/home/maid.png",
-                    getTranslate(context, 'home.service_entry'), () {
-                  Navigator.pushNamed(context, '/serviceEntry');
-                }),
+                // visitorType(size, "assets/home/maid.png",
+                //     getTranslate(context, 'home.service_entry'), () {
+                //   Navigator.pushNamed(context, '/serviceEntry');
+                // }),
               ],
             )
           ],
@@ -186,15 +186,18 @@ class _GuardHomeScreenState extends State<GuardHomeScreen> {
             )
           ],
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+             width5Space,
+            width5Space,
             Image.asset(
               image,
               height: size.height * 0.065,
               width: size.height * 0.065,
             ),
-            heightSpace,
+            width5Space,
+            width5Space,
             Text(
               title,
               style: semibold16Black33,

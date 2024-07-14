@@ -133,8 +133,8 @@
         "community": "Community",
         "new": "New",
         "add_new_visitor": "Add new visitor",
-        "guest_entry": "Guest entry",
-        "cab_entry": "Cab entry",
+        "guest_entry": "Guest Entry",
+        "cab_entry": "Cab Entry",
         "delivery_entry": "Delivery entry",
         "service_entry": "Maid entry",
         "visitor_entry": "Visitor entry",
@@ -391,7 +391,7 @@
         "back_to_home": "Back to home"
     },
     "cab_entry": {
-        "cab_entry": "Cab entry",
+        "cab_entry": "Cab Entry",
         "continue": "Continue",
         "pickup_droupup": "Pickup/Droupup",
         "enter_pickup_droupup": "Enter Pickup/Droupup",
@@ -411,7 +411,7 @@
         "confirm_send_in": "Confirm & send in"
     },
     "confirm_send_notification": {
-        "guest_entry": "Guest entry",
+        "guest_entry": "Guest Entry",
         "confirm_and_send_notification": "Confirm and send notification",
         "inside_time": "Inside time",
         "enter_inside_time": "Enter Inside time",
