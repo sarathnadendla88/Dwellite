@@ -76,6 +76,9 @@ class _ServiceScreenState extends State<ServiceScreen> {
                 bookServiceBox(),
                 heightSpace,
                 heightSpace,
+                 bookElectricalBox(),
+                heightSpace,
+                heightSpace,
                 Text(
                   getTranslate(context, 'service.nearby_service'),
                   style: semibold16Black33,
@@ -159,6 +162,83 @@ class _ServiceScreenState extends State<ServiceScreen> {
             ),
             Image.asset(
               "assets/services/painter.png",
+              height: 80.0,
+              width: 80.0,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  bookElectricalBox() {
+    return Container(
+      clipBehavior: Clip.hardEdge,
+      width: double.maxFinite,
+      padding: languageValue == 4
+          ? const EdgeInsets.only(right: 6.0)
+          : const EdgeInsets.only(left: 6.0),
+      decoration: BoxDecoration(
+          color: primaryColor,
+          borderRadius: BorderRadius.circular(10.0),
+          border: Border.all(
+            color: d2E3EFColor,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: primaryColor.withOpacity(0.1),
+              blurRadius: 12.0,
+              offset: const Offset(0, 6),
+            )
+          ]),
+      child: Container(
+        width: double.maxFinite,
+        color: const Color(0xFFE8F2F9),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            const Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    horizontal: fixPadding * 2.0, vertical: fixPadding * 1.3),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Electrical work",
+                      style: semibold16Primary,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    height5Space,
+                    Text(
+                      "Need electrical work for my home.",
+                      style: medium14Grey,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    height5Space,
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.date_range_outlined,
+                          size: 16.0,
+                          color: greyColor,
+                        ),
+                        width5Space,
+                        Expanded(
+                          child: Text(
+                            "20 Jun 2024 | 03:30pm",
+                            style: medium12Black33,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Image.asset(
+              "assets/services/mechanic.png",
               height: 80.0,
               width: 80.0,
             )

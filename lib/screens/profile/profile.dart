@@ -104,6 +104,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
       "relation": "Friend"
     },
   ];
+  final petEntriesList = [
+    {
+      "image": "assets/profile/cat.png",
+      "name": "Mimmy",
+      "relation": "Pet"
+    },
+    {
+      "image": "assets/profile/dog.png",
+      "name": "Jimmy",
+      "relation": "Pet cum son"
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -159,22 +171,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
           dottedDivider(),
           heightSpace,
           heightSpace,
-          title(getTranslate(context, 'profile.my_vehicles'),
-              getTranslate(context, 'profile.add_vehicles_text'), () {
-            addVehiclesDialog(context, size);
-          }),
-          height5Space,
-          vehiclesListContent(size),
-          heightSpace,
-          dottedDivider(),
-          heightSpace,
-          heightSpace,
           title(getTranslate(context, 'profile.frequent_entries'),
               getTranslate(context, 'profile.add_frequent_entries_text'), () {
             addFrequentEntriesDialog(context, size);
           }),
           height5Space,
           frequentEntriesListContent(size),
+          height5Space,
+          dottedDivider(),
+          heightSpace,
+          heightSpace,
+          title("My pets", "Add your pets for quick entry", () {
+            addPetEntriesDialog(context, size);
+          }),
+          height5Space,
+          petEntriesListContent(size),
+          height5Space,
+          dottedDivider(),
+          heightSpace,
+          heightSpace,
+          title(getTranslate(context, 'profile.my_vehicles'),
+              getTranslate(context, 'profile.add_vehicles_text'), () {
+            addVehiclesDialog(context, size);
+          }),
+          height5Space,
+          vehiclesListContent(size),
         ],
       ),
     );
@@ -195,6 +216,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
               frequentEntriesList[index]['image'].toString(),
               frequentEntriesList[index]['name'].toString(),
               frequentEntriesList[index]['relation'].toString()),
+        ),
+      ),
+    );
+  }
+
+  petEntriesListContent(Size size) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(
+          vertical: fixPadding, horizontal: fixPadding * 1.25),
+      child: Row(
+        children: List.generate(
+          petEntriesList.length,
+          (index) => listContent(
+              size,
+              index,
+              petEntriesList[index]['image'].toString(),
+              petEntriesList[index]['name'].toString(),
+              petEntriesList[index]['relation'].toString()),
         ),
       ),
     );
@@ -817,6 +858,150 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   addFrequentEntriesDialog(BuildContext context, Size size) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        bool sendgatePass = true;
+        return StatefulBuilder(builder: (context, state) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            shadowColor: Colors.transparent,
+            insetPadding: const EdgeInsets.all(fixPadding * 2.0),
+            child: Stack(
+              children: [
+                Container(
+                  width: double.maxFinite,
+                  margin: EdgeInsets.only(top: size.height * 0.05),
+                  decoration: BoxDecoration(
+                    color: whiteColor,
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: shadowColor.withOpacity(0.25),
+                        blurRadius: 6.0,
+                      )
+                    ],
+                  ),
+                  child: ListView(
+                    shrinkWrap: true,
+                    padding: EdgeInsets.fromLTRB(fixPadding * 2.0,
+                        size.height * 0.07, fixPadding * 2.0, fixPadding * 2.0),
+                    physics: const BouncingScrollPhysics(),
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Text(
+                              getTranslate(
+                                  context, 'profile.add_frequent_entries'),
+                              style: semibold16Black33,
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          heightSpace,
+                          heightSpace,
+                          dialogTitle(getTranslate(context, 'profile.name')),
+                          height5Space,
+                          Container(
+                            decoration: boxDecoration(),
+                            child: TextField(
+                              cursorColor: primaryColor,
+                              keyboardType: TextInputType.name,
+                              style: semibold14Black33,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: fixPadding * 1.5,
+                                    vertical: fixPadding * 1.4),
+                                hintText:
+                                    getTranslate(context, 'profile.enter_name'),
+                                hintStyle: medium14Grey,
+                              ),
+                            ),
+                          ),
+                          heightSpace,
+                          height5Space,
+                          dialogTitle(
+                              getTranslate(context, 'profile.phone_number')),
+                          height5Space,
+                          Container(
+                            decoration: boxDecoration(),
+                            child: TextField(
+                              cursorColor: primaryColor,
+                              style: semibold14Black33,
+                              keyboardType: TextInputType.phone,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: fixPadding * 1.5,
+                                    vertical: fixPadding * 1.4),
+                                hintText: getTranslate(
+                                    context, 'profile.enter_phone_number'),
+                                hintStyle: medium14Grey,
+                              ),
+                            ),
+                          ),
+                          height5Space,
+                          heightSpace,
+                          dialogTitle(
+                              getTranslate(context, 'profile.relations')),
+                          height5Space,
+                          Container(
+                            decoration: boxDecoration(),
+                            child: TextField(
+                              cursorColor: primaryColor,
+                              style: semibold14Black33,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: fixPadding * 1.5,
+                                    vertical: fixPadding * 1.4),
+                                hintText: getTranslate(
+                                    context, 'profile.enter_relations'),
+                                hintStyle: medium14Grey,
+                              ),
+                            ),
+                          ),
+                          heightSpace,
+                          sendGatePassCheckBox(sendgatePass, () {
+                            state(() {
+                              setState(() {
+                                sendgatePass = !sendgatePass;
+                              });
+                            });
+                          }),
+                          heightSpace,
+                          heightSpace,
+                          heightSpace,
+                          submitButton(context, size, () {
+                            Navigator.pop(context);
+                          }),
+                          heightSpace,
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                dialogTopImage(size),
+                Padding(
+                  padding: EdgeInsets.only(top: size.height * 0.05),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      closeButton(context),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
+      },
+    );
+  }
+
+  addPetEntriesDialog(BuildContext context, Size size) {
     return showDialog(
       context: context,
       builder: (context) {
