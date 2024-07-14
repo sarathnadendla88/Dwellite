@@ -69,12 +69,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> login() async {
-   LoaderView().pleaseWaitDialog(context);
+    LoaderView().pleaseWaitDialog(context);
 
     Response<dynamic> res =
         await _apiService.login(phoneController.text, deviceId!);
 
-LoaderView().cancelDialog();
+    LoaderView().cancelDialog();
     if (res.statusCode == 200) {
       var data = res.data['data'];
       print(data);
@@ -82,8 +82,9 @@ LoaderView().cancelDialog();
       SharedPreferencesHelper()
           .saveData("localuserid", data['user_id'].toString());
       SharedPreferencesHelper().saveData("otp", data['otp'].toString());
-      SharedPreferencesHelper()
-          .saveIntData(Constants.USER_TYPE_DATA, data['user_type']);
+      SharedPreferencesHelper().saveIntData(Constants.USERID, data['user_id']);
+      Constants.USERIDCONST = data['user_id'].toString();
+      SharedPreferencesHelper().saveIntData(Constants.USER_TYPE_DATA, data['user_type']);
 
       //SharedPreferencesHelper().saveData("usertype", data['user_type']);
       if (data['user_type'] == UserType.resident.value) {
@@ -95,8 +96,8 @@ LoaderView().cancelDialog();
       }
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
 
-      Navigator.pushNamed(context, '/otp', arguments: {'loginotp': data['otp'].toString()});
-       
+      Navigator.pushNamed(context, '/otp',
+          arguments: {'loginotp': data['otp'].toString()});
     } else {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('Error: ${res.data['message']}'),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1033194167439",
+    "project_id": "dwellite-433d3",
+    "storage_bucket": "dwellite-433d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033194167439:android:cfba9418bca5987d88e4fa",
+        "android_client_info": {
+          "package_name": "com.solivar.dwellite"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr1Yg9iKOwwHLFsBNE-BEeDZNtUBy1trk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

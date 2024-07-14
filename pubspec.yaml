@@ -51,6 +51,13 @@ dependencies:
   fluttertoast: ^8.2.6
   device_info_plus: ^10.1.0
   device_info: ^2.0.3
+  firebase_core: ^3.2.0
+  cloud_firestore: ^5.1.0
+  firebase_messaging: ^15.0.3
+  firebase_storage: ^12.1.1
+  googleapis_auth: ^1.6.0
+  flutter_notification_channel: ^3.1.0
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:

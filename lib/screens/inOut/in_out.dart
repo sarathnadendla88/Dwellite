@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/theme/theme.dart';
-import 'package:dwellite/utils/constants.dart';
 import 'package:flutter/material.dart';
 
 class InOutScreen extends StatefulWidget {

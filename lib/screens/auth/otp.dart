@@ -97,10 +97,19 @@ class _OTPScreenState extends State<OTPScreen> {
       print(data);
       if (data['access_token'] != null) {
         // to save token in local storage
-        SharedPreferencesHelper().saveData('useraccesstoken', data['access_token']);
-        SharedPreferencesHelper().saveIntData(Constants.ISADMIN, data['is_admin']);
-        SharedPreferencesHelper().saveIntData(Constants.ISVERIFIED, data['is_verified']);
-        
+        SharedPreferencesHelper()
+            .saveData('useraccesstoken', data['access_token']);
+
+        SharedPreferencesHelper()
+            .saveIntData(Constants.ISADMIN, data['is_admin']);
+        SharedPreferencesHelper()
+            .saveIntData(Constants.ISVERIFIED, data['is_verified']);
+        SharedPreferencesHelper().saveData(Constants.USERNAME, data['name']);
+        Constants.USERNAMECONST = data['name'];
+        SharedPreferencesHelper().saveData(Constants.USEREMAIL, data['email']);
+        if (data['email'] != null) {
+          Constants.USEREMAILCONST = data['email'] ?? "";
+        }
         // stopTimer();
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         Navigator.popAndPushNamed(context, '/bottomBar');
