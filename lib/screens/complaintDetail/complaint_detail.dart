@@ -166,7 +166,7 @@ class _ComplaintDetailScreenState extends State<ComplaintDetailScreen> {
                 setState(() {
                   commentList.add({
                     "image": "assets/helpDesk/member1.png",
-                    "name": "Tammini Venkat",
+                    "name": "Venkat",
                     "flatNo": "A-252",
                     "time": "2min",
                     "comment": commentController.text,

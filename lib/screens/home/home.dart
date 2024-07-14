@@ -153,23 +153,23 @@ class _HomeScreenState extends State<HomeScreen> {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.only(bottom: fixPadding * 9.5),
         children: [
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, '/calling');
-            },
-            child: Container(
-              padding: const EdgeInsets.fromLTRB(
-                  fixPadding * 2.0, 0.0, fixPadding * 2.0, fixPadding * 2.0),
-              color: whiteColor,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  banner(),
-                  communityTitle(),
-                ],
-              ),
-            ),
-          ),
+          // GestureDetector(
+          //   onTap: () {
+          //     Navigator.pushNamed(context, '/calling');
+          //   },
+          //   child: Container(
+          //     padding: const EdgeInsets.fromLTRB(
+          //         fixPadding * 2.0, 0.0, fixPadding * 2.0, fixPadding * 2.0),
+          //     color: whiteColor,
+          //     child: Column(
+          //       crossAxisAlignment: CrossAxisAlignment.start,
+          //       children: [
+          //        // banner(),
+          //       //  communityTitle(),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           communityListContent(size),
         ],
       ),
@@ -414,7 +414,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Hi Tammini Venkat",
+                "Hi Venkat",
                 style: semibold18Primary,
               ),
               height5Space,
