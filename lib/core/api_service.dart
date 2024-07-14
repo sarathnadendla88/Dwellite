@@ -107,7 +107,6 @@ class APIService {
       }
     }
   }
-  
 
   Future<Response<dynamic>> registerData(String jsonString) async {
     // to get token from local storage
@@ -135,9 +134,9 @@ class APIService {
     }
   }
 
- Future<Response<dynamic>> adminRegisterResident(String jsonString) async {
+  Future<Response<dynamic>> adminRegisterResident(String jsonString) async {
     // to get token from local storage
-     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
+    var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
     Map<String, dynamic> parsedJson = jsonDecode(jsonString);
     try {
       Response response = await Dio().post("$baseUrl/admin/add/resident",
@@ -214,13 +213,12 @@ class APIService {
     var atoken = await SharedPreferencesHelper().readData('useraccesstoken');
     print(atoken);
     try {
-      Response response = await Dio().get("http://localhost:8080/user/visitors",
+      Response response = await Dio().get("$baseUrl/user/visitors",
           options: Options(headers: {
             "Content-Type": "application/json",
             "access-token": atoken,
           }));
 
-      //returns the successful user data json object
       return response.toString();
     } on DioException catch (e) {
       //returns the error object if any
@@ -244,8 +242,7 @@ class APIService {
             "Content-Type": "application/json",
             "access-token": atoken,
           }));
-      print("Tammini");
-      print(response);
+
       //returns the successful user data json object
       return response;
     } on DioException catch (e) {
@@ -396,7 +393,7 @@ class APIService {
   }
 
   Future<Response<dynamic>> approveResidentStatus(
-      int userId,  int residentStatus) async {
+      int userId, int residentStatus) async {
     String atoken = await SharedPreferencesHelper().readData('useraccesstoken');
 
     try {
@@ -404,7 +401,6 @@ class APIService {
           data: {
             "user_id": userId,
             "status": residentStatus,
-           
           },
           options: Options(headers: {
             "Content-Type": "application/json",
@@ -418,13 +414,11 @@ class APIService {
     }
   }
 
-  Future<Response<dynamic>> deleteResident(
-      int userId) async {
+  Future<Response<dynamic>> deleteResident(int userId) async {
     String atoken = await SharedPreferencesHelper().readData('useraccesstoken');
 
     try {
       Response response = await Dio().delete("$baseUrl/admin/resident/$userId",
-          
           options: Options(headers: {
             "Content-Type": "application/json",
             "access-token": atoken,

@@ -124,9 +124,7 @@ class _BottomBarState extends State<BottomBar> {
         body: pages.elementAt(selectedIndex),
         bottomNavigationBar: bottomBar(),
         floatingActionButton:
-            (userType == UserType.resident || userType == UserType.admin)
-                ? floatingButton()
-                : const Text(''),
+            (userType == UserType.resident) ? floatingButton() : const Text(''),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       ),
     );
