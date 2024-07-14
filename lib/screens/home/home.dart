@@ -417,12 +417,12 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Hi Venkat",
+                "Vinay Kumar",
                 style: semibold18Primary,
               ),
               height5Space,
               Text(
-                "A-418 | Dwellite society",
+                "A-19 | Dwellite society",
                 style: medium14Grey,
               )
             ],
