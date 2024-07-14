@@ -300,7 +300,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (_) => MessageScreen(user: user)));
-                Navigator.pushNamed(context, '/message');
+                // Navigator.pushNamed(context, '/message');
               },
               child: Row(
                 children: [
