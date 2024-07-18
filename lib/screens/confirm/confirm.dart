@@ -3,11 +3,9 @@ import 'dart:convert';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/theme/theme.dart';
-import 'package:dwellite/utils/constants.dart';
 import 'package:dwellite/utils/toast_helper.dart';
 import 'package:dwellite/utils/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ConfirmScreen extends StatefulWidget {
   const ConfirmScreen({super.key});

@@ -100,13 +100,17 @@ class _OTPScreenState extends State<OTPScreen> {
         SharedPreferencesHelper()
             .saveData('useraccesstoken', data['access_token']);
 
-        SharedPreferencesHelper()
-            .saveIntData(Constants.ISADMIN, data['is_admin']);
-        SharedPreferencesHelper()
-            .saveIntData(Constants.ISVERIFIED, data['is_verified']);
+        SharedPreferencesHelper().saveIntData(Constants.ISADMIN, data['is_admin']);
+
+        SharedPreferencesHelper().saveIntData(Constants.ISVERIFIED, data['is_verified']);
+
         SharedPreferencesHelper().saveData(Constants.USERNAME, data['name']);
+
         Constants.USERNAMECONST = data['name'];
+
         SharedPreferencesHelper().saveData(Constants.USEREMAIL, data['email']);
+
+        SharedPreferencesHelper().saveData(Constants.USERDOB, data['dob']);
         if (data['email'] != null) {
           Constants.USEREMAILCONST = data['email'] ?? "";
         }

@@ -9,6 +9,10 @@ class Constants {
   static String USERNAMECONST = "";
 
   static const String USEREMAIL = "USEREMAIL";
+  static const String USERMOBILE = "USERMOBILE";
+  
+  static const String USERDOB = "USERDOB";
+
   static String USEREMAILCONST = "";
 
   static const int maxRetryAttempts = 3;

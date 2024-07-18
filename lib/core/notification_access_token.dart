@@ -6,7 +6,8 @@ class NotificationAccessToken {
   static String? _token;
 
   //to generate token only once for an app run
-  static Future<String?> get getToken async => _token ?? await _getAccessToken();
+  static Future<String?> get getToken async =>
+      _token ?? await _getAccessToken();
 
   // to get admin bearer token
   static Future<String?> _getAccessToken() async {
@@ -20,21 +21,23 @@ class NotificationAccessToken {
 
         // Paste Your Generated Json File Content
         ServiceAccountCredentials.fromJson({
-          "type": "service_account",
-          "project_id": "dwellite-433d3",
-          "private_key_id": "1a1621fe6a5374932428ae0f4a05782b7acccb14",
-          "private_key":
-              "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC6R/L0jOehSyDP\nFX8Sgq+E3HXtgLRppZHy5FQUmDB6pEPCCGG8gOnt/2GzFlIcAI0SSFt//JMwqGoD\n4I5BeV9oKSrmR8YFFllmQrazIL5Ynf9NrNB1pR0+UjAWfgU3O8f5ZclaG5HnFap/\nB93Jt6MatWDKQilnjPnFB+CxyWkXmKls3Qv4W1mot7JC+OoscLz13w9U/+plLZmF\ne9CS/Gynp8F1IlKbWJSEy8ltkHEhpzpm9RDrWD+trBbWHVnhuaOz7rqO4Ydts+TK\npNugK/ksL5B6SFtqZfkvsnZzR2tKh0VtLJLfH5I8tEGWJteli/0RqnRXhBruPrLa\nP4fZo3wxAgMBAAECggEAKa2z8R3+rGKyFEtXu2VEjqpB83IOy615JnqKSnJTtHkA\n1Q7JiWLhlDfF3QszM2M3LR5F5LC3IRWpZLUvNvyISXaei9gGuPgrZ/soxBLhK9Qr\n/W3bVVssXBeI/VtUYOuN/mHVB4VwI19AXrw8liexhWYMIizj9TCAaOJulnC9RAMo\ntxAu2Xt69vE+cIgPTUzf01fY7NXHVnQs3aXvuD3LfQVHQXwbU/BApSNCPn3Df4YQ\nAUQhSXGprEtDmF89d1sCg/v92DxXH22B/nqpUh51iLSzCW6QjUGy4YlwdJ0U/qhj\nRrefq6sC4dJgVcbmJyQkgyAdouZKA2niFfSHeVqXTQKBgQDx+He1kJCWlE2AOFAK\noTNlLSsJxjj6fRhcuxWykZCXvVP2xi+CfYFCN+n+ZDGhU3pi1NDJ8Twh4M7EFCM7\npGmhW7qDgiXqpB3R8lt3huH+3rPqP6z+2zDi+HxCJckpWpb32TorgkIdSRp3eM0s\n03kl0rB6xW59LMNMKBz2/mn5RQKBgQDFFOPp+u6MerJjjuVD9aWTzYuCON0z3DO/\n4bbGIP6vZ4SzmlYtdDHBcZp/ogLIgK4AGYNwWSap6kQVDV/6llxQu9uLtPpwkrza\n3BTKrSQdtu7tvdHWSu5cCqkWIz4hVEDpHWeXoFkg37GDVbK+CZdYOb2y5d2Bel/6\nYY2DoQ5H/QKBgB8Rt1VB5b7f9f+Tu3tR7YZ9QTx1DlXjgCBQCV4vYLCLJ9/U3L7V\nnKZDBbGbbd/4FwvfpZt4dS8obYQxzcBXwRRt8cn3CSVSw1100BfN4vDV6aYXXQAw\nZtuN6m6X6Xd84UubweNaS2D1RQe4JCgwUyrvHaf199TszXrW37k7O6I9AoGAVFxF\n1wEvnXhj5dPj9Xwv/R2N6xcWML3AdRFUIGk9O63vEsYsv1YueiR7wsiBsnvKf4Zs\nSeoPb8o0jGJmRCiaqYBQUPQOA6P8LR7p03vbqtCEY8XODZGTiFiT2kMJtFCRXHfW\nwQPFQxodrR9A3LHUU9KbjflxIJxWeyHI5qBJMa0CgYEAz2iWE5rNtJ1mLrsC/o8j\njDV0RHzhN2f2pAxLlXHJ40nvQ5Nbyk5gCI2llUTN73YPNJXcM6ZKARyzlx0cA0TE\nolbpV91lb5j2L2HLAz1nciOzh1IRCJRk7T7j01TrygOv2n6fyWfUGuHCR5lztaiv\nykRUUKoMSaezOlB88DIqTIQ=\n-----END PRIVATE KEY-----\n",
-          "client_email":
-              "firebase-adminsdk-9y8mc@we-chat-75f13.iam.gserviceaccount.com",
-          "client_id": "115556782220674603906",
-          "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-          "token_uri": "https://oauth2.googleapis.com/token",
-          "auth_provider_x509_cert_url":
-              "https://www.googleapis.com/oauth2/v1/certs",
-          "client_x509_cert_url":
-              "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-9y8mc%40we-chat-75f13.iam.gserviceaccount.com",
-          "universe_domain": "googleapis.com"
+          {
+            "type": "service_account",
+            "project_id": "dwellite-433d3",
+            "private_key_id": "35368d6f9973902a21d72fee6b834d51029c8b12",
+            "private_key":
+                "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDxxunkwz+SMHlH\nxdOOSw7WyotqDEiEzvwyfhm1EZvh7q8avsArUlUUkhYAVmh0Y8nGu1AhkSg9dMW/\nws+r7/Tn8iAxOTNEJEWWzWhsykhiH9i5MGgaHQsjGV0dIR7b2R9nUdFG6hghZF0u\nd0WtidF7GT4UQfn2rgdP/0J//iT3TQAGX3dW4+mgnmIap6KdPQmEts6M9mRsqVWC\nLzHmzwcxvPx9fEAbBUbhMHcXo2mR8PdnZtODm+omzwcEQVmkcKn6vqvI2Ee5qUeW\n8q+GXCfnfPCl/XkdqMiTgJGGNLiP544w3Ca7cqx7ghRbW7l7XxSIdVpk1KIRUtOs\nyBTMWNmxAgMBAAECggEAFUYJ1YGiidPvD/QlqbsL+rVGsBWVme32feDflTGP9EDC\nsok/MnCjoNQ70FrKBRe0rOJVaiayEjpAnh9fk4LhGzmQQJSGYMQKRXscaZog5VVl\nBeJu/oE4tiVoroP4CaMgosAtuF4nsmR42HpRLLRYNMsjTbgCbQSiCxVsPgPYL9Qw\nWETqF/y46RcUT383uQYuArL62vA3rK3fKrZKsKTHBlkVTFzamrVkCZnjIm68lJLx\nL38raD4jGsnJ31ib1bIx3p4RxPt8SCIsYvafkOcrEgKv/LME/imGQCXVxjWRedNC\nKYHwHZNBSE3tnhH4HzZDjA78fy0DGAka900uBs9xcwKBgQD7SNmIjuO6cY5Ll1kD\nmtRX62CJxYDy8X7ghDDbQ12qc0+hyFd5q5ka50ay/xz2r62a1CKM514UwzxXbYwM\n8OWSkSm5Ln1DYsFJdMniQ0lNVeDK+2ibjDfDYJfmmePz3C8G9PPabBrWtQvkWFj/\nxFobkJ0+IApnPEJKjzG2f0CiWwKBgQD2UGPuyR5mMl7kbsYCjZE/FtFqike2TARZ\n7hon5OGsKOb3VU/LcvO9vtPefwmWzql6sxTpTBuXEAcO/HX8ORo3RhGtuQr8AqAj\nurhZgKkQMHEEpFgDt42i5vJCo4m31RhPQ1x4/gS2hNwTd11ICP+n6XV8ZcCbQTNL\n2wL27eoZ4wKBgQCz+bJsP0NV9x0egPDtRwiNS/Vh18aKunLQJX3EnVRJz7saOZ6F\nc2T+QuV9MIEzIhJqUUPJvbDBmC/wwnJLloIm3reOfYCUMfgUP4SU/PJUZIzTdQuw\nVNZfpiBFtrTwpSQ9jFXXfBQg8Zzp2GkuDxkmowYsR9CLrjogorzNZAkL/wKBgA6r\nRPhQk/XkJBCYpEQ8qBzIwBoHODQcHNo6OuaLVAFLwk2SkBj+tJNlTPrgN/L6Rc+f\n4KvwM2hwtOrokCJASFZoXt8ouQW/Jkhac2YpKmhjaierne5CvTWpaV4cnTQMhdEa\nouQ1xJQWH4EtR6nll0wptCx/ZtQYMvTeizOngZyfAoGAcssC/cOb84kn0aUvTm1t\nPd8787QSv0fjH1rQixetUJGCZi024L5AkKyMG0cUms0Y6CVvBlrdPhuxbPJczIJQ\nAzRDaazFYoWbDzZzUNtH2V4SCs2WjULv3FtmlTKIy67AHcv74YNMoVfVbbbs3RvV\n8FvPM7wraGWNlstz9J67rcY=\n-----END PRIVATE KEY-----\n",
+            "client_email":
+                "firebase-adminsdk-myccs@dwellite-433d3.iam.gserviceaccount.com",
+            "client_id": "101041676927061099333",
+            "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+            "token_uri": "https://oauth2.googleapis.com/token",
+            "auth_provider_x509_cert_url":
+                "https://www.googleapis.com/oauth2/v1/certs",
+            "client_x509_cert_url":
+                "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-myccs%40dwellite-433d3.iam.gserviceaccount.com",
+            "universe_domain": "googleapis.com"
+          }
         }),
         [fMessagingScope],
       );

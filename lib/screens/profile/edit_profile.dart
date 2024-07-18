@@ -2,6 +2,8 @@ import 'package:dwellite/localization/localization_const.dart';
 import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
+import '../../utils/constants.dart';
+import '../../utils/utility.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -15,12 +17,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
+  String userName = "";
+  String userEmail = "";
+
   @override
   void initState() {
-    nameController.text = "Venkat";
-    emailController.text = "tammini@gmail.com";
-    phoneController.text = "+91 1234567890";
     super.initState();
+    sharedPrefData();
+  }
+
+  Future<void> sharedPrefData() async {
+    userName = await SharedPreferencesHelper().readData(Constants.USERNAME);
+    userEmail = await SharedPreferencesHelper().readData(Constants.USEREMAIL);
+
+    phoneController.text =
+        await SharedPreferencesHelper().readData(Constants.USERMOBILE);
+    setState(() {
+      userName;
+      userEmail;
+    });
+    nameController.text = userName;
+
+    emailController.text = userEmail;
   }
 
   @override
@@ -53,14 +71,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         children: [
           userImage(size),
           heightSpace,
-          const Text(
-            "Venkat",
+          Text(
+            userName,
             textAlign: TextAlign.center,
             style: semibold18Primary,
           ),
           height5Space,
-          const Text(
-            "A-418,Dwellite society",
+          Text(
+            "$userEmail,Dwellite society",
             style: medium14Grey,
             textAlign: TextAlign.center,
           ),

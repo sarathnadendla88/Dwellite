@@ -22,19 +22,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       "image": "assets/onboarding/onboarding1.png",
       "name": translate('onboarding.text_1'),
       "description":
-          "Lorem ipsum dolor sit amet consectetur. Ilectusrhoncus morbi varius. Viverra morbi vehicula accumsan nam natoque. Dignissim at velit"
+          "Enhance peace of mind with our safety-focused app. Report incidents, connect with neighbors, and stay informed about community security."
     },
     {
       "image": "assets/onboarding/onboarding2.png",
       "name": translate('onboarding.text_2'),
       "description":
-          "Lorem ipsum dolor sit amet consectetur. Ilectusrhoncus morbi varius. Viverra morbi vehicula accumsan nam natoque. Dignissim at velit"
+          "Effortlessly request maintenance, housekeeping, or repairs. Our app brings convenience right to your doorstep."
     },
     {
       "image": "assets/onboarding/onboarding3.png",
       "name": translate('onboarding.text_3'),
       "description":
-          "Lorem ipsum dolor sit amet consectetur. Ilectusrhoncus morbi varius. Viverra morbi vehicula accumsan nam natoque. Dignissim at velit"
+          "Stay in the loop! Discover local events, workshops, and gatherings. Never miss out on community happenings."
     },
   ];
 

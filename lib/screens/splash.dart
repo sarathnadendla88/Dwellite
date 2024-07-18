@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dwellite/notifications/notification_service.dart';
 import 'package:dwellite/theme/theme.dart';
 import 'package:dwellite/utils/utility.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +15,10 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   final storage = const FlutterSecureStorage();
+
   @override
   void initState() {
+    PushNotifications.getDeviceToken();
     Timer(const Duration(seconds: 3), () async {
       SharedPreferencesHelper()
           .readData('useraccesstoken')

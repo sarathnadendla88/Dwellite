@@ -8,6 +8,8 @@ import 'package:iconify_flutter/icons/carbon.dart';
 import 'package:ionicons/ionicons.dart';
 
 import '../../theme/theme.dart';
+import '../../utils/constants.dart';
+import '../../utils/utility.dart';
 import '../../widget/column_builder.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -20,6 +22,22 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   String relationName = '';
   int selectedRelation = 0;
+  String userName = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sharedPrefData();
+  }
+
+  Future<void> sharedPrefData() async {
+    userName = await SharedPreferencesHelper().readData(Constants.USERNAME);
+
+    setState(() {
+      userName;
+    });
+  }
 
   final relationList = [
     translate('profile.father'),
@@ -105,11 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     },
   ];
   final petEntriesList = [
-    {
-      "image": "assets/profile/cat.png",
-      "name": "Mimmy",
-      "relation": "Pet"
-    },
+    {"image": "assets/profile/cat.png", "name": "Mimmy", "relation": "Pet"},
     {
       "image": "assets/profile/dog.png",
       "name": "Jimmy",
@@ -481,8 +495,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             )
                           ],
                           image: const DecorationImage(
-                            image:
-                                AssetImage("assets/profile/profile-image.png"),
+                            image: AssetImage("assets/home/profile-image.png"),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -492,8 +505,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                              "Venkat",
+                            Text(
+                              userName,
                               style: semibold18Primary,
                               overflow: TextOverflow.ellipsis,
                             ),

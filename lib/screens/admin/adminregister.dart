@@ -8,6 +8,7 @@ import 'package:dwellite/utils/loader_view.dart';
 import 'package:dwellite/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class AdminRegisterScreen extends StatefulWidget {
@@ -272,6 +273,10 @@ class _RegisterScreenState extends State<AdminRegisterScreen> {
         cursorColor: primaryColor,
         style: semibold16Black33,
         keyboardType: TextInputType.phone,
+        inputFormatters: [
+          FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+          LengthLimitingTextInputFormatter(10)
+        ],
         decoration: InputDecoration(
           border: InputBorder.none,
           prefixIconConstraints: const BoxConstraints(maxWidth: 60),
@@ -514,4 +519,3 @@ class _RegisterScreenState extends State<AdminRegisterScreen> {
     );
   }
 }
-

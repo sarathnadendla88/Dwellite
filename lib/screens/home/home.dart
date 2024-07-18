@@ -16,6 +16,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  var userName = "";
+  var userEmail = "";
+
   final commumityList = [
     {
       "image": "assets/home/members.png",
@@ -63,8 +66,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> sharedPrefData() async {
-    var isVerified =
-        await SharedPreferencesHelper().readIntData(Constants.ISVERIFIED);
+    var isVerified = await SharedPreferencesHelper().readIntData(Constants.ISVERIFIED);
+    userName = await SharedPreferencesHelper().readData(Constants.USERNAME);
+    userEmail = await SharedPreferencesHelper().readData(Constants.USEREMAIL);
+    setState(() {
+      userName;
+      userEmail;
+    });
+
     if (isVerified == 0) {
       dialogWithBlurContent();
     }
@@ -412,17 +421,17 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         widthSpace,
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Vinay Kumar",
+                userName,
                 style: semibold18Primary,
               ),
               height5Space,
               Text(
-                "A-19 | Dwellite society",
+                "$userEmail | Dwellite society",
                 style: medium14Grey,
               )
             ],

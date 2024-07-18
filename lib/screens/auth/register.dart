@@ -10,6 +10,7 @@ import 'package:dwellite/utils/utility.dart';
 import 'package:dwellite/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -65,8 +66,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (res.statusCode == 200) {
       print(res);
       var data = res.data['data'];
-      SharedPreferencesHelper().saveData('useraccesstoken', data['access_token']);
-      SharedPreferencesHelper().saveIntData(Constants.ISVERIFIED, data['is_verified']);
+      SharedPreferencesHelper()
+          .saveData('useraccesstoken', data['access_token']);
+      SharedPreferencesHelper()
+          .saveIntData(Constants.ISVERIFIED, data['is_verified']);
 
       Navigator.popAndPushNamed(context, '/bottomBar');
     } else {
@@ -168,7 +171,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         if (usernameController.text.isEmpty) {
           Utils.showError(context, "Please enter name.");
         } else if (phoneController.text.isEmpty) {
-          Utils.showError(context, "Please enter phone number.");
+          Utils.showError(context, "Please enter mobile number.");
         } else if (emailController.text.isEmpty) {
           Utils.showError(context, "Please select date.");
         } else if (entryCodeController.text.isEmpty) {
@@ -273,6 +276,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
         cursorColor: primaryColor,
         style: semibold16Black33,
         keyboardType: TextInputType.phone,
+        inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+            LengthLimitingTextInputFormatter(10)
+          ],
         decoration: InputDecoration(
           border: InputBorder.none,
           prefixIconConstraints: const BoxConstraints(maxWidth: 60),

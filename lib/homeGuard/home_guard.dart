@@ -11,6 +11,8 @@ import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:iconify_flutter/icons/carbon.dart';
 import 'package:pinput/pinput.dart';
 
+import '../utils/constants.dart';
+
 class GuardHomeScreen extends StatefulWidget {
   const GuardHomeScreen({super.key});
 
@@ -23,9 +25,21 @@ class _GuardHomeScreenState extends State<GuardHomeScreen> {
 
   final APIService _apiService = APIService.instance;
 
+  String userName = "",userEmail="";
+
   @override
   void initState() {
     super.initState();
+    sharedPrefData();
+  }
+
+  Future<void> sharedPrefData() async {
+    userName = await SharedPreferencesHelper().readData(Constants.USERNAME);
+    userEmail = await SharedPreferencesHelper().readData(Constants.USEREMAIL);
+    setState(() {
+      userName;
+      userEmail;
+    });
   }
 
   Future<void> verifiySecurityCheck(String code) async {
@@ -98,14 +112,14 @@ class _GuardHomeScreenState extends State<GuardHomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Sarath",
+                   Text(
+                    userName,
                     style: semibold16Black33,
                     overflow: TextOverflow.ellipsis,
                   ),
                   heightBox(3.0),
-                  const Text(
-                    "Gate A | Dwellite society",
+                   Text(
+                    "$userEmail | Dwellite society",
                     style: medium14Grey,
                     overflow: TextOverflow.ellipsis,
                   )
@@ -156,8 +170,7 @@ class _GuardHomeScreenState extends State<GuardHomeScreen> {
                     getTranslate(context, 'home.cab_entry'), () {
                   Navigator.pushNamed(context, '/cabEntry');
                 }),
-                visitorType(size, "assets/home/maid.png",
-                    "Other Entries", () {
+                visitorType(size, "assets/home/maid.png", "Other Entries", () {
                   Navigator.pushNamed(context, '/deliveryEntry');
                 }),
                 // visitorType(size, "assets/home/maid.png",
@@ -189,7 +202,7 @@ class _GuardHomeScreenState extends State<GuardHomeScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-             width5Space,
+            width5Space,
             width5Space,
             Image.asset(
               image,

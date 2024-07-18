@@ -4,7 +4,6 @@ import 'package:dio/dio.dart';
 import 'package:dwellite/core/api_service.dart';
 import 'package:dwellite/localization/localization_const.dart';
 import 'package:dwellite/screens/screens.dart';
-//import 'package:dwellite/screens/auth/loginDTO.dart';
 import 'package:dwellite/theme/theme.dart';
 import 'package:dwellite/utils/constants.dart';
 import 'package:dwellite/utils/loader_view.dart';
@@ -12,6 +11,7 @@ import 'package:dwellite/utils/utility.dart';
 import 'package:dwellite/utils/utils.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -84,7 +84,8 @@ class _LoginScreenState extends State<LoginScreen> {
       SharedPreferencesHelper().saveData("otp", data['otp'].toString());
       SharedPreferencesHelper().saveIntData(Constants.USERID, data['user_id']);
       Constants.USERIDCONST = data['user_id'].toString();
-      SharedPreferencesHelper().saveIntData(Constants.USER_TYPE_DATA, data['user_type']);
+      SharedPreferencesHelper()
+          .saveIntData(Constants.USER_TYPE_DATA, data['user_type']);
 
       //SharedPreferencesHelper().saveData("usertype", data['user_type']);
       if (data['user_type'] == UserType.resident.value) {
@@ -171,8 +172,6 @@ class _LoginScreenState extends State<LoginScreen> {
               heightSpace,
               heightSpace,
               signupText(),
-              
-              
             ],
           ),
         ),
@@ -202,8 +201,11 @@ class _LoginScreenState extends State<LoginScreen> {
   loginButton() {
     return GestureDetector(
       onTap: () {
-        _submitForm();
-
+        if (phoneController.text.isEmpty) {
+          Utils.showError(context, "Please enter mobile number.");
+        } else {
+          _submitForm();
+        }
         // Navigator.pushNamed(context, '/otp');
       },
       child: Container(
@@ -237,6 +239,48 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+  // phoneField() {
+  //   return Container(
+  //     width: double.maxFinite,
+  //     decoration: BoxDecoration(
+  //       color: whiteColor,
+  //       borderRadius: BorderRadius.circular(10.0),
+  //       boxShadow: [
+  //         BoxShadow(
+  //           color: blackColor.withOpacity(0.1),
+  //           blurRadius: 12.0,
+  //           offset: const Offset(0, 6),
+  //         )
+  //       ],
+  //     ),
+  //     child: Container(
+  //       padding: EdgeInsets.only(top: 5),
+  //       child: IntlPhoneField(
+  //         controller: phoneController,
+  //         cursorColor: primaryColor,
+  //         style: semibold16Black33,
+  //         dropdownIconPosition: IconPosition.trailing,
+  //         dropdownIcon: const Icon(
+  //           Icons.keyboard_arrow_down_outlined,
+  //           color: blackColor,
+  //         ),
+  //         onChanged: (phone) {
+  //           _validatePhoneNumber(phone.completeNumber ?? '');
+  //         },
+  //         textAlign: languageValue == 4 ? TextAlign.right : TextAlign.left,
+  //         flagsButtonPadding:
+  //             const EdgeInsets.symmetric(horizontal: fixPadding * 0.8),
+  //         disableLengthCheck: true,
+  //         decoration: InputDecoration(
+  //           border: InputBorder.none,
+  //           hintText: getTranslate(context, 'login.enter_mobile_number'),
+  //           hintStyle: medium16Grey,
+  //           errorText: _phoneValidationError,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
   phoneField() {
     return Container(
       width: double.maxFinite,
@@ -248,33 +292,42 @@ class _LoginScreenState extends State<LoginScreen> {
             color: blackColor.withOpacity(0.1),
             blurRadius: 12.0,
             offset: const Offset(0, 6),
-          )
+          ),
         ],
       ),
-      child: Container(
-        padding: EdgeInsets.only(top: 5),
-        child: IntlPhoneField(
-          controller: phoneController,
-          cursorColor: primaryColor,
-          style: semibold16Black33,
-          dropdownIconPosition: IconPosition.trailing,
-          dropdownIcon: const Icon(
-            Icons.keyboard_arrow_down_outlined,
-            color: blackColor,
+      child: TextField(
+        controller: phoneController,
+        cursorColor: primaryColor,
+        style: semibold16Black33,
+        keyboardType: TextInputType.phone,
+        inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+            LengthLimitingTextInputFormatter(10)
+          ],
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          prefixIconConstraints: const BoxConstraints(maxWidth: 60),
+          prefixIcon: Container(
+            width: 60.0,
+            margin: languageValue == 4
+                ? const EdgeInsets.only(left: 15.0)
+                : const EdgeInsets.only(right: 15.0),
+            decoration: BoxDecoration(
+                border: languageValue == 4
+                    ? const Border(
+                        left: BorderSide(color: greyColor, width: 1.5),
+                      )
+                    : const Border(
+                        right: BorderSide(color: greyColor, width: 1.5),
+                      )),
+            alignment: Alignment.center,
+            child: const Icon(
+              Icons.phone_android,
+              size: 20,
+            ),
           ),
-          onChanged: (phone) {
-            _validatePhoneNumber(phone.completeNumber ?? '');
-          },
-          textAlign: languageValue == 4 ? TextAlign.right : TextAlign.left,
-          flagsButtonPadding:
-              const EdgeInsets.symmetric(horizontal: fixPadding * 0.8),
-          disableLengthCheck: true,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: getTranslate(context, 'login.enter_mobile_number'),
-            hintStyle: medium16Grey,
-            errorText: _phoneValidationError,
-          ),
+          hintText: getTranslate(context, 'login.enter_mobile_number'),
+          hintStyle: medium16Grey,
         ),
       ),
     );
